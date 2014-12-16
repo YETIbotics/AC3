@@ -17,8 +17,8 @@ const int _mc1_INB1 = 24;
 const int _mc1_EN1DIAG1 = 26;
 const int _mc1_CS1 = A4;
 const int _mc1_INA2 = 22;
-const int _mc1_INB2 = 52;
-const int _mc1_EN1DIAG2 = 50;
+//const int _mc1_INB2 = 52;
+//const int _mc1_EN1DIAG2 = 50;
 const int _mc1_CS2 = A2; 
 const int _mc1_PWM1 = 10;
 const int _mc1_PWM2 = 12;
@@ -35,21 +35,21 @@ const int _mc2_CS2 = A3;
 const int _mc2_PWM1 = 9;
 const int _mc2_PWM2 = 11;
 
- //Encoder Left Pinouts
- const int _encLeftInt = 19;
- const int _encLeftDig = 39;
+//Encoder Left Pinouts
+//const int _encLeftInt = 19;
+//const int _encLeftDig = 39;
 
 //Encoder Right Pinouts
-const int _encRightInt = 21;
-const int _encRightDig = 35;
+//const int _encRightInt = 21;
+//const int _encRightDig = 35;
 
 //Encoder RIGHT LIFT Pinouts
-const int _encLiftRtInt = 20;
-const int _encLiftRtDig = 37;
+//const int _encLiftRtInt = 20;
+//const int _encLiftRtDig = 37;
 
 //Encoder LEFT LIFT Pinouts
-const int _encLiftLtInt = 20;
-const int _encLiftLtDig = 37;
+//const int _encLiftLtInt = 20;
+//const int _encLiftLtDig = 37;
 
 // Timer Polling Intervals
 const int _readControllerInterval = 10;
