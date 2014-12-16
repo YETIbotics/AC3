@@ -70,7 +70,7 @@ float rightSpeed;
 
 void loop() {
 
-	
+  
   Usb.Task();
   if (Xbox.XboxReceiverConnected) {
     for (uint8_t i = 0; i < 4; i++) {
@@ -82,26 +82,26 @@ void loop() {
 
         if (Xbox.getAnalogHat(LeftHatY, i) > 7500 || Xbox.getAnalogHat(LeftHatY, i) < -7500) {
          leftSpeed = map(Xbox.getAnalogHat(LeftHatY, i), 0, 32000, 0, 400);
-          	//leftSpeed = 200;
+            //leftSpeed = 200;
             //Serial.print(F("LeftHatY: "));
             //Serial.print(leftSpeed);
             //Serial.print("\t");
 
        } 
        else {
-          	// left motor 0 
+            // left motor 0 
         leftSpeed = 0;
        }
 
        if (Xbox.getAnalogHat(RightHatY, i) > 7500 || Xbox.getAnalogHat(RightHatY, i) < -7500) {
          rightSpeed = map(Xbox.getAnalogHat(RightHatY, i), 0, 32000, 0, 400);
-          	//rightSpeed = 200;
+            //rightSpeed = 200;
            // Serial.print(F("RightHatY: "));
            // Serial.print(rightSpeed);
 
        }
        else {
-          	// right motor 0
+            // right motor 0
         rightSpeed = 0;
        }
           //Serial.println();
@@ -114,7 +114,7 @@ void loop() {
        //Left Drive
        md1.setM1Speed(rightSpeed);
 
-	     //Set Left Speed
+       //Set Left Speed
        //md2.setM2Speed(rightSpeed);
 
 
@@ -138,4 +138,3 @@ void loop() {
  }
 
 }
-
