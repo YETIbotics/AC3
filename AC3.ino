@@ -48,6 +48,13 @@ const int _encLDig = 29;
 const int _encLLInt = 30;
 const int _encLLDig = 18;
 
+// Limit Switch Pins
+const int _leftLimitSwitch = 0;
+const int _rightLimitSwitch = 0;
+
+// Max Lift 
+const int _liftMax = 50;
+
 // Timer Polling Intervals
 const int _readControllerInterval = 10;
 const int _writeControllerInterval = 15;
@@ -59,6 +66,9 @@ const int _readRobotInterval = 25;
 float _leftSpeed;
 float _rightSpeed;
 float _liftSpeed;
+
+float _leftLiftPos;
+float _rightLiftPos;
 
 
 
@@ -86,6 +96,10 @@ void setup() {
   // assign public state variables
   _leftSpeed = 0.0;
   _rightSpeed = 0.0;
+  _liftSpeed = 0.0;
+  _leftLiftPos = 0.0;
+  _rightLiftPos = 0.0;   
+
 
   Serial.begin(115200);
   while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
