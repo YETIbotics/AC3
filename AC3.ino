@@ -35,21 +35,18 @@ const int _mc2_CS2 = A3;
 const int _mc2_PWM1 = 9;
 const int _mc2_PWM2 = 11;
 
-//Encoder Left Pinouts
-//const int _encLeftInt = 19;
-//const int _encLeftDig = 39;
+// Encoder Pinouts
+const int _encRDInt = 3;
+const int _encRDDig = 22;
 
-//Encoder Right Pinouts
-//const int _encRightInt = 21;
-//const int _encRightDig = 35;
+const int _encRLInt = 2;
+const int _encRLDig = 24;
 
-//Encoder RIGHT LIFT Pinouts
-//const int _encLiftRtInt = 20;
-//const int _encLiftRtDig = 37;
+const int _encLDInt = 18;
+const int _encLDig = 29;
 
-//Encoder LEFT LIFT Pinouts
-//const int _encLiftLtInt = 20;
-//const int _encLiftLtDig = 37;
+const int _encLLInt = 30;
+const int _encLLDig = 18;
 
 // Timer Polling Intervals
 const int _readControllerInterval = 10;
@@ -74,10 +71,10 @@ DualVNH5019MotorShield md1(_mc1_INA1, _mc1_INB1, _mc1_EN1DIAG1
 DualVNH5019MotorShield md2(_mc2_INA1, _mc2_INB1, _mc2_EN1DIAG1
  , _mc2_CS1, _mc2_INA2, _mc2_INB2, _mc2_EN1DIAG2, _mc2_CS2, _mc2_PWM1, _mc2_PWM2);
 
-//Encoder encLeft(_encLeftInt, _encLeftDig);
-//Encoder encRight(_encRightInt, _encRightDig);
-//Encoder encLiftRt(_encLiftRtInt, _encLiftRtDig);
-//Encoder encLiftLt(_encLiftLtInt, _encLiftLtDig);
+Encoder encRD(_encRDInt, _encRDDig);
+Encoder encLD(_encLDInt, _encLDig);
+Encoder encRL(_encRLInt, _encRLDig);
+Encoder encLL(_encLLInt, _encLLDig);
 
 SimpleTimer timer;
 
