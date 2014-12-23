@@ -17,8 +17,8 @@ const int _mc1_INB1 = 24;
 const int _mc1_EN1DIAG1 = 26;
 const int _mc1_CS1 = A4;
 const int _mc1_INA2 = 22;
-const int _mc1_INB2 = 38;
-const int _mc1_EN1DIAG2 = 40;
+const int _mc1_INB2 = 40;
+const int _mc1_EN2DIAG2 = 38;
 const int _mc1_CS2 = A2; 
 const int _mc1_PWM1 = 10;
 const int _mc1_PWM2 = 12;
@@ -30,7 +30,7 @@ const int _mc2_EN1DIAG1 = 32;
 const int _mc2_CS1 = A5;
 const int _mc2_INA2 = 28;
 const int _mc2_INB2 = 46;
-const int _mc2_EN1DIAG2 = 44;
+const int _mc2_EN2DIAG2 = 44;
 const int _mc2_CS2 = A3; 
 const int _mc2_PWM1 = 9;
 const int _mc2_PWM2 = 11;
@@ -76,10 +76,10 @@ USB Usb;
 XBOXRECV Xbox(&Usb);
 
 DualVNH5019MotorShield md1(_mc1_INA1, _mc1_INB1, _mc1_EN1DIAG1
- , _mc1_CS1, _mc1_INA2, _mc1_INB2, _mc1_EN1DIAG2, _mc1_CS2, _mc1_PWM1, _mc1_PWM2);
+ , _mc1_CS1, _mc1_INA2, _mc1_INB2, _mc1_EN2DIAG2, _mc1_CS2, _mc1_PWM1, _mc1_PWM2);
 
 DualVNH5019MotorShield md2(_mc2_INA1, _mc2_INB1, _mc2_EN1DIAG1
- , _mc2_CS1, _mc2_INA2, _mc2_INB2, _mc2_EN1DIAG2, _mc2_CS2, _mc2_PWM1, _mc2_PWM2);
+ , _mc2_CS1, _mc2_INA2, _mc2_INB2, _mc2_EN2DIAG2, _mc2_CS2, _mc2_PWM1, _mc2_PWM2);
 
 Encoder encRD(_encRDInt, _encRDDig);
 Encoder encLD(_encLDInt, _encLDig);
@@ -147,6 +147,7 @@ void readController(){
           _leftSpeed = 0.0;
           
         }
+        Serial.print(LeftHatY); 
         //Right Hat Y Axis
         if (Xbox.getAnalogHat(RightHatY, i) > 7500 || Xbox.getAnalogHat(RightHatY, i) < -7500) {
           _rightSpeed = 400.0 / 32767 * Xbox.getAnalogHat(RightHatY, i); 
@@ -196,10 +197,10 @@ void writeRobot(){
 
  void MoveSpeed(float leftSpeed, float rightSpeed)
  {
-  //Set Right Speed
+  //Set Left Speed
   md2.setM2Speed(leftSpeed);
 
-  //Set Left Speed
+  //Set Right Speed
   md1.setM1Speed(rightSpeed);
 
  }
