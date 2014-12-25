@@ -43,10 +43,10 @@ const int _encRLInt = 2;
 const int _encRLDig = 24;
 
 const int _encLDInt = 18;
-const int _encLDig = 29;
+const int _encLDig = 26;
 
-const int _encLLInt = 30;
-const int _encLLDig = 18;
+const int _encLLInt = 29;
+const int _encLLDig = 28;
 
 // Limit Switch Pins
 const int _leftLimitSwitch = 0;
