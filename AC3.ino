@@ -5,6 +5,7 @@
 #include "SimpleTimer.h"
 #include "PID_v1.h"
 #include "Encoder.h"
+#include <Servo.h>
 // Satisfy IDE, which only needs to see the include statment in the ino.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
@@ -35,6 +36,9 @@ const int _mc2_CS2 = A3;
 const int _mc2_PWM1 = 9;
 const int _mc2_PWM2 = 11;
 
+//Intake ESC Pin
+const int _intakePWM = 7;
+
 // Encoder Pinouts
 const int _encRDInt = 3;
 const int _encRDDig = 22;
@@ -55,6 +59,13 @@ const int _rightLimitSwitch = 0;
 // Max Lift 
 const int _liftMax = 50;
 
+//HobbyKing ESC Max & Min
+//const float _ESC_HK_MAX = 180; //157.0;
+//const float _ESC_HK_MIN = 0; //29.0;
+const float _ESC_HK_ADD = 0;
+const float _ESC_HK_MAX = 157.0+_ESC_HK_ADD;
+const float _ESC_HK_MIN = 29.0-_ESC_HK_ADD;
+
 // Timer Polling Intervals
 const int _readControllerInterval = 10;
 const int _writeControllerInterval = 15;
@@ -70,6 +81,8 @@ float _liftSpeed;
 float _leftLiftPos;
 float _rightLiftPos;
 
+int _intakeDirection;
+
 
 
 USB Usb;
@@ -80,6 +93,8 @@ DualVNH5019MotorShield md1(_mc1_INA1, _mc1_INB1, _mc1_EN1DIAG1
 
 DualVNH5019MotorShield md2(_mc2_INA1, _mc2_INB1, _mc2_EN1DIAG1
  , _mc2_CS1, _mc2_INA2, _mc2_INB2, _mc2_EN2DIAG2, _mc2_CS2, _mc2_PWM1, _mc2_PWM2);
+
+Servo Intake;
 
 Encoder encRD(_encRDInt, _encRDDig);
 Encoder encLD(_encLDInt, _encLDig);
@@ -99,6 +114,7 @@ void setup() {
   _liftSpeed = 0.0;
   _leftLiftPos = 0.0;
   _rightLiftPos = 0.0;   
+  _intakeDirection = 0;
 
 
   Serial.begin(115200);
@@ -110,6 +126,8 @@ void setup() {
 
   md1.init();
   md2.init();
+
+  Intake.attach(_intakePWM);
 
   timer.setInterval(_readControllerInterval, readController);
   timer.setInterval(_writeControllerInterval, writeController);
@@ -147,7 +165,7 @@ void readController(){
           _leftSpeed = 0.0;
           
         }
-        Serial.print(LeftHatY); 
+        //Serial.print(LeftHatY); 
         //Right Hat Y Axis
         if (Xbox.getAnalogHat(RightHatY, i) > 7500 || Xbox.getAnalogHat(RightHatY, i) < -7500) {
           _rightSpeed = 400.0 / 32767 * Xbox.getAnalogHat(RightHatY, i); 
@@ -170,6 +188,25 @@ void readController(){
         {
           _liftSpeed = 0.0;
         }
+
+        
+
+        if (Xbox.getButtonPress(L1, i))
+        {
+          _intakeDirection = 1;
+        
+        }
+        //R1 Button
+        else if (Xbox.getButtonPress(R1, i))
+        {
+          _intakeDirection = -1;
+          
+        }
+        else
+        {
+          _intakeDirection = 0;
+          
+        }
       }
     }
   }
@@ -186,6 +223,7 @@ void readRobot(){
 void writeRobot(){
   MoveSpeed(_leftSpeed, _rightSpeed);
   LiftSpeed(_liftSpeed);
+  IntakeDirection(_intakeDirection);
 }
 
 
@@ -194,6 +232,25 @@ void writeRobot(){
 // ===========================================
 // ROBOT METHODS
 // ===========================================
+
+void IntakeDirection(int intakeDirection)
+{
+  switch(intakeDirection)
+  {
+    case 1:
+      Intake.write(_ESC_HK_MAX);
+      //Serial.write("MAX");
+      break;
+    case -1:
+      Intake.write(_ESC_HK_MIN);
+      //Serial.write("MIN");
+      break;
+    case 0:
+      Intake.write(93);
+      //Serial.write("0");
+      break;
+  }
+}
 
  void MoveSpeed(float leftSpeed, float rightSpeed)
  {
