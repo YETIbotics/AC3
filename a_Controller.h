@@ -11,7 +11,11 @@ class Controller
     // CONSTRUCTORS
     Controller(USB *pUsb); // Default pin selection.
 
+    void Task();
+
     XBOXRECV Xbox;
+
+    float LeftJoystick;
 
    private:
 

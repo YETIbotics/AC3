@@ -11,9 +11,9 @@ class Robot
     // CONSTRUCTORS
     Robot(); // Default pin selection.
 
+    void Task();
+
     USB Usb;
-
-
    
   private:
     // Motor Controller 1 Pinouts 
