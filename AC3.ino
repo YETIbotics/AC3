@@ -1,5 +1,4 @@
 
-
 #include "XBOXRECV.h"
 #include "DualVNH5019MotorShield.h"
 #include "SimpleTimer.h"
@@ -41,16 +40,16 @@ const int _intakePWM = 7;
 
 // Encoder Pinouts
 const int _encRDInt = 3;
-const int _encRDDig = 22;
+const int _encRDDig = 23;
 
 const int _encRLInt = 2;
-const int _encRLDig = 24;
+const int _encRLDig = 25;
 
 const int _encLDInt = 18;
-const int _encLDig = 26;
+const int _encLDig = 27;
 
-const int _encLLInt = 29;
-const int _encLLDig = 28;
+const int _encLLInt = 19;
+const int _encLLDig = 29;
 
 // Limit Switch Pins
 const int _leftLimitSwitch = 0;
@@ -217,7 +216,21 @@ void writeController(){
 }
 
 void readRobot(){
-
+    Serial.print(digitalRead(_encRDDig));
+    Serial.print("\t");
+    Serial.print(digitalRead(_encRLDig));
+    Serial.print("\t");
+    Serial.print(digitalRead(_encLDig));
+    Serial.print("\t");
+    Serial.print(digitalRead(_encLLDig));
+    Serial.print("\t");
+    Serial.print(encRD.read());
+    Serial.print("\t");
+    Serial.print(encLD.read());
+    Serial.print("\t");
+    Serial.print(encRL.read());
+    Serial.print("\t");
+    Serial.println(encLL.read());
 }
 
 void writeRobot(){
