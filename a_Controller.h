@@ -8,17 +8,15 @@
 class Controller
 {
 
-    private:
-    USB *_pUsb;
+
 
   public:  
     // CONSTRUCTORS
     Controller(USB *pUsb); // Default pin selection.
 
-   
+    XBOXRECV Xbox;
 
-
-  
+   private:
 
 };
 

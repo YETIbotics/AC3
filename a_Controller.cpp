@@ -2,9 +2,8 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-    XBOXRECV Xbox(&_pUsb);
-
 Controller::Controller(USB *p)
+	: Xbox(p)
 {
-	_pUsb = p;
+	
 }
