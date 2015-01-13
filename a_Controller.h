@@ -7,9 +7,6 @@
 
 class Controller
 {
-
-
-
   public:  
     // CONSTRUCTORS
     Controller(USB *pUsb); // Default pin selection.
