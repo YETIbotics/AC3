@@ -12,49 +12,6 @@
 #endif
 
 
-// Motor Controller 1 Pinouts 
-const int _mc1_INA1 = 48;
-const int _mc1_INB1 = 24;
-const int _mc1_EN1DIAG1 = 26;
-const int _mc1_CS1 = A4;
-const int _mc1_INA2 = 22;
-const int _mc1_INB2 = 40;
-const int _mc1_EN2DIAG2 = 38;
-const int _mc1_CS2 = A2; 
-const int _mc1_PWM1 = 10;
-const int _mc1_PWM2 = 12;
-
-// Motor Controller 2 Pinouts
-const int _mc2_INA1 = 42;
-const int _mc2_INB1 = 30;
-const int _mc2_EN1DIAG1 = 32;
-const int _mc2_CS1 = A5;
-const int _mc2_INA2 = 28;
-const int _mc2_INB2 = 46;
-const int _mc2_EN2DIAG2 = 44;
-const int _mc2_CS2 = A3; 
-const int _mc2_PWM1 = 9;
-const int _mc2_PWM2 = 11;
-
-//Intake ESC Pin
-const int _intakePWM = 7;
-
-// Encoder Pinouts
-const int _encRDInt = 3;
-const int _encRDDig = 22;
-
-const int _encRLInt = 2;
-const int _encRLDig = 24;
-
-const int _encLDInt = 18;
-const int _encLDig = 26;
-
-const int _encLLInt = 29;
-const int _encLLDig = 28;
-
-// Limit Switch Pins
-const int _leftLimitSwitch = 0;
-const int _rightLimitSwitch = 0;
 
 // Max Lift 
 const int _liftMax = 50;
