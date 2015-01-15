@@ -9,6 +9,7 @@ class Controller
 {
   public:  
     // CONSTRUCTORS
+    Controller();
     Controller(USB *pUsb); // Default pin selection.
 
     void Task();
@@ -23,6 +24,7 @@ class Controller
 
     XBOXRECV Xbox;
     const int joystickMinThresh = 1500;
+    USB dummyXboxPointer;
 
 };
 

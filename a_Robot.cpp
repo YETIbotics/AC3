@@ -8,6 +8,16 @@ Robot::Robot()
 	
 }
 
-void Robot::Task(){
+void Robot::Read(){
 	Usb.Task();
+}
+
+void Robot::Write(){
+
+	//float asdf = controller->LeftJoystick;
+}
+
+void Robot::SetController(Controller *p)
+{
+	controller = p;
 }

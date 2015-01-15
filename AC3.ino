@@ -8,13 +8,17 @@ void setup() {
 	Serial.begin(115200);
 	while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
 	
+  Robot.SetController(&Controller);
 
 }
 
 void loop() {
 
-	Robot.Task();
+	Robot.Read();
+  
 	Controller.Task();
+
+  Robot.Write();
 
 	Serial.println(Controller.LeftJoystick);
 	delay(100);

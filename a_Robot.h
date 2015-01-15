@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "Usb.h"
-
+#include "a_Controller.h"
 
 class Robot 
 {
@@ -11,11 +11,15 @@ class Robot
     // CONSTRUCTORS
     Robot(); // Default pin selection.
 
-    void Task();
+    void Read();
+    void Write();
+    void SetController(Controller *controller);
 
     USB Usb;
    
   private:
+    Controller *controller;
+
     // Motor Controller 1 Pinouts 
     const int _mc1_INA1 = 48;
     const int _mc1_INB1 = 24;

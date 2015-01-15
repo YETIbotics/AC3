@@ -2,6 +2,12 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
+Controller::Controller()
+:Xbox(&dummyXboxPointer)
+{
+
+}
+
 Controller::Controller(USB *p)
 : Xbox(p)
 {

@@ -1,0 +1,13 @@
+#include "a_Intake.h"
+
+// Constructors ////////////////////////////////////////////////////////////////
+
+Intake::Intake()
+{
+	
+}
+
+void Intake::Task()
+{
+	
+}

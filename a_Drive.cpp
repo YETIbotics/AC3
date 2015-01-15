@@ -1,0 +1,13 @@
+#include "a_Drive.h"
+
+// Constructors ////////////////////////////////////////////////////////////////
+
+Drive::Drive()
+{
+	
+}
+
+void Drive::Task()
+{
+	
+}
