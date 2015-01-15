@@ -45,16 +45,16 @@ class Robot
 
     // Encoder Pinouts
     const int _drive_Right_encInt = 3;
-    const int _drive_Right_encDig = 22;
+    const int _drive_Right_encDig = 23;
 
     const int _lift_Right_encInt = 2;
-    const int _lift_Right_encDig = 24;
+    const int _lift_Right_encDig = 25;
 
     const int _drive_Left_encInt = 18;
-    const int _drive_Left_encDig = 26;
+    const int _drive_Left_encDig = 27;
 
-    const int _lift_Left_encInt = 29;
-    const int _lift_Left_encDig = 28;
+    const int _lift_Left_encInt = 19;
+    const int _lift_Left_encDig = 29;
 
     // Limit Switch Pins
     const int _lift_Left_Limit = 0;

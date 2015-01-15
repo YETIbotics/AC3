@@ -13,11 +13,16 @@ class Controller
 
     void Task();
 
-    XBOXRECV Xbox;
 
     float LeftJoystick;
+    float RightJoystick;
+    float TriggerAggregate;
+    int LR2Aggregate;
 
    private:
+
+    XBOXRECV Xbox;
+    const int joystickMinThresh = 1500;
 
 };
 
