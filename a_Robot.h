@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 #include "Usb.h"
+#include "DualVNH5019MotorShield.h"
+#include "Encoder.h"
+#include <Servo.h>
 #include "a_Controller.h"
 
 class Robot 
@@ -19,6 +22,13 @@ class Robot
    
   private:
     Controller *controller;
+    DualVNH5019MotorShield mc1;
+    DualVNH5019MotorShield mc2;
+    Servo serIntake;
+    Encoder encDriveRight;
+    Encoder encDriveLeft;
+    Encoder encLiftRight;
+    Encoder encLiftLeft;
 
     // Motor Controller 1 Pinouts 
     const int _mc1_INA1 = 48;

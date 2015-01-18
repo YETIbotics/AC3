@@ -7,8 +7,9 @@
 
 Robot Robot;
 Controller Controller(&Robot.Usb);
+
 Lift Lift;
-Drive Drive;
+Drive Drive(&Robot);
 Intake Intake;
 Claw Claw;
 
@@ -35,4 +36,10 @@ void loop() {
 	Serial.println(Controller.LeftJoystick);
 	delay(100);
 
+}
+
+void WriteRobot()
+{
+  Drive.LeftDriveSpeed = Controller.LeftJoystick;
+  Drive.RightJoystick = Controller.RightJoystick;
 }

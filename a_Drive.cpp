@@ -2,12 +2,12 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-Drive::Drive()
+Drive::Drive(Robot *p)
 {
-	
+	robot = p;
 }
 
 void Drive::Task()
 {
-	
+	Robot.mc1.SetSpeed(LeftDriveSpeed);
 }
