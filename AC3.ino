@@ -178,10 +178,10 @@ void changeColor(){
     if (red > 255) red = 0;
  
     green = green+15;
-    if (green > 255) green = 100;
+    if (green > 255) green = 0;
  
     blue =blue+5;;
-    if (blue > 255) blue = 50;
+    if (blue > 255) blue = 0;
   
   analogWrite(_ledRed, red);
   analogWrite(_ledGrn, green);
