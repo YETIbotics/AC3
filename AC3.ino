@@ -22,6 +22,19 @@ const int _mc1_EN2DIAG2 = 38;
 const int _mc1_CS2 = A2; 
 const int _mc1_PWM1 = 10;
 const int _mc1_PWM2 = 12;
+/*
+ _INA1 = 2; 48
+  _INB1 = 4; 24
+  _EN1DIAG1 = 6; 26
+  _CS1 = A0; A4
+  _INA2 = 7; 22
+  _INB2 = 8; 40
+  _EN2DIAG2 = 12; 38
+  _CS2 = A1; A2
+  _PWM1 = 9; 10
+  PWM2 = 10 ; 12
+*/
+
 
 // Motor Controller 2 Pinouts
 const int _mc2_INA1 = 42;
@@ -80,6 +93,10 @@ const int _writeControllerInterval = 15;
 const int _writeRobotInterval = 20;
 const int _readRobotInterval = 25;
 
+//arm
+const float _armMin = 40;
+const float _armMax = 80;
+
 
 
 float _leftSpeed;
@@ -97,6 +114,12 @@ int _clawSpeed;
 int _redVal;
 int _blueVal;
 int _greenVal;
+
+//Define Variables we'll be connecting to
+double Setpoint, Input, Output;
+
+//Specify the links and initial tuning parameters
+PID myPID(&Input, &Output, &Setpoint,1,.75,.2, DIRECT);
 
 USB Usb;
 XBOXRECV Xbox(&Usb);
@@ -154,7 +177,8 @@ void setup() {
   pinMode(_ledGrn, OUTPUT);
   pinMode(_ledBlu, OUTPUT);
   pinMode(_ledRed, OUTPUT);
-
+ //pinMode(_leftLimitSwitch, INPUT);
+  pinMode(_rightLimitSwitch, INPUT);
 
 
 
@@ -163,9 +187,68 @@ void setup() {
   timer.setInterval(_readRobotInterval, readRobot);
   timer.setInterval(_writeRobotInterval, writeRobot);
   timer.setInterval(200, changeColor);
+  timer.setInterval(100, runPID);
 
   clawTimerId = timer.setInterval(500, turnOffClaw);
 
+  Input = analogRead(0);
+  Setpoint = 60; //_ESC_HK_MAX-40;
+
+  //turn the PID on
+  myPID.SetMode(AUTOMATIC);
+  myPID.SetOutputLimits(_ESC_HK_MIN+40,_ESC_HK_MAX-40);
+
+  if(digitalRead(_rightLimitSwitch) == LOW)
+  {
+    LiftSpeed(-200);
+    delay(2500);
+    LiftSpeed(0);
+    ClawSolenoid.write(_ESC_HK_MAX-20);
+    delay(200);
+    ClawSolenoid.write(93);
+
+
+    //ClawMove(1);
+    //delay(800);
+    
+
+    for(int i = 0; i < 100; i++)
+    {
+      Input = encClaw.read();
+      myPID.Compute();
+
+      //Serial.println(Output);
+
+      //if(Output > _ESC_HK_MAX-40)
+        //Output = _ESC_HK_MAX-40;
+
+      Claw.write(Output);
+      delay(50);
+
+    /*Serial.print(Setpoint);
+    Serial.print("\t");
+    Serial.print(Input);
+    Serial.print("\t");
+    Serial.println(Output);*/
+      
+    }
+    Claw.write(90);
+    LiftSpeed(200);
+    delay(3000);
+    LiftSpeed(0);
+  }
+
+
+}
+
+void runPID()
+{
+  if(encClaw.read() >= _armMin && encClaw.read() <= _armMax)
+  {
+  Input = encClaw.read();
+  myPID.Compute();
+  Claw.write(Output);
+  }
 }
 
 int red = 0;
@@ -199,6 +282,10 @@ void loop() {
 
 
 void readController(){
+
+  
+
+
   Usb.Task();
 
   if (Xbox.XboxReceiverConnected) 
@@ -329,8 +416,19 @@ void readRobot(){
     Serial.print(encLD.read());
     Serial.print("\t");
     Serial.print(encRL.read());
+    Serial.print("\t");*/
+    //Serial.print(digitalRead(_rightLimitSwitch));
+    //Serial.println("\t");
+    //Serial.print(digitalRead(_leftLimitSwitch));
+    //Serial.print("\t");
+    //Serial.println(encLL.read());
+    //Serial.println(encClaw.read());
+   /* Serial.print(Setpoint);
     Serial.print("\t");
-    Serial.println(encLL.read());*/
+    Serial.print(Input);
+    Serial.print("\t");
+    Serial.println(Output);*/
+
 }
 
 void writeRobot(){
@@ -413,6 +511,7 @@ void ClawMove(int moveDirection)
 
   //Set Right Speed
   md1.setM1Speed(rightSpeed);
+  //var asdf = "asf";
 
  }
 
@@ -423,6 +522,12 @@ void ClawMove(int moveDirection)
     {
       md2.setM1Brake(400);
       md1.setM2Brake(400);
+
+        //Set Left Speed
+      //md2.setM2Speed(_leftSpeed);
+
+      //Set Right Speed
+     //md2.setM1Speed(_rightSpeed);
     }
     else
     {
