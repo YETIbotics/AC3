@@ -12,10 +12,11 @@ class Drive
 
     void Task();
 
-
+    float LeftControllerSpeed;
+    float RightControllerSpeed;
    
   private:
-  	Robot robot;
+  	Robot *robot;
     
 };
 

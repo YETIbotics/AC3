@@ -6,7 +6,7 @@
 #include "DualVNH5019MotorShield.h"
 #include "Encoder.h"
 #include <Servo.h>
-#include "a_Controller.h"
+//#include "a_Controller.h"
 
 class Robot 
 {
@@ -14,21 +14,76 @@ class Robot
     // CONSTRUCTORS
     Robot(); // Default pin selection.
 
+
     void Read();
     void Write();
-    void SetController(Controller *controller);
+    //void SetController(Controller *controller);
+
+    //Read Only Items
+    float GetEncDriveRight();
+    float GetEncDriveLeft();
+    float GetEncLiftRight();
+    float GetEncLiftLeft();
+    float GetEncClaw();
+    bool GetLeftLimitSwitch();
+    bool GetRightLimitSwitch();
+    float GetDriveLeftCurrent();
+    float GetDriveRightCurrent();
+    float GetLiftLeftCurrent();
+    float GetLiftRightCurrent();
+
+    //Readable/Writeable Items
+
+    //Expect -400 through 400
+    float DriveRightSpeed;
+    float DriveLeftSpeed;
+    float LiftLeftSpeed;
+    float LiftRightSpeed;
+    float IntakeSpeed;
+    float ArmSpeed;
+    float ClawPower;
+
+    //Expect 0-255
+    float LEDRed;
+    float LEDBlue;
+    float LEDGreen;
 
     USB Usb;
    
   private:
-    Controller *controller;
+    //Controller *controller;
     DualVNH5019MotorShield mc1;
     DualVNH5019MotorShield mc2;
     Servo serIntake;
+    Servo serArm;
+    Servo serClaw;
     Encoder encDriveRight;
     Encoder encDriveLeft;
     Encoder encLiftRight;
     Encoder encLiftLeft;
+    Encoder encClaw;
+
+    //Private ReadOnly Vars
+    int _encDriveRight;
+    int _encDriveLeft;
+    int _encLiftRight;
+    int _encLiftLeft;
+    int _encClaw;
+    bool _leftLimitSwitch;
+    bool _rightLimitSwitch;
+    int _driveLeftCurrent;
+    int _driveRightCurrent;
+    int _liftLeftCurrent;
+    int _liftRightCurrent;
+
+    //Pirvate Methods
+    int convertToServo(float inVal);
+
+    //ESC
+    const int _servoMax = 157;
+    const int _servoMin = 29;
+    const int _servoNeut = 90;
+
 
     // Motor Controller 1 Pinouts 
     const int _mc1_INA1 = 48;
@@ -56,6 +111,8 @@ class Robot
 
     //Intake ESC Pin
     const int _intake_PWM = 7;
+    const int _arm_PWM = 5;
+    const int _claw_PWM = 6;
 
     // Encoder Pinouts
     const int _drive_Right_encInt = 3;
@@ -70,9 +127,17 @@ class Robot
     const int _lift_Left_encInt = 19;
     const int _lift_Left_encDig = 29;
 
+    const int _claw_encInt = 21;
+    const int _claw_encDig = 49;
+
     // Limit Switch Pins
-    const int _lift_Left_Limit = 0;
-    const int _lift_Right_Limit = 0;
+    const int _lift_Left_Limit = 37;
+    const int _lift_Right_Limit = 35;
+
+    //LED
+    const int _ledRed = 4;
+    const int _ledGrn = 8;
+    const int _ledBlu = 13;
 
     
 };

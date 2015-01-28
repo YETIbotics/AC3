@@ -2,12 +2,12 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-Intake::Intake()
+Intake::Intake(Robot *p)
 {
-	
+	robot = p;
 }
 
 void Intake::Task()
 {
-	
+	robot->IntakeSpeed = ControllerSpeed;
 }

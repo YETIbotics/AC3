@@ -9,5 +9,7 @@ Drive::Drive(Robot *p)
 
 void Drive::Task()
 {
-	Robot.mc1.SetSpeed(LeftDriveSpeed);
+	//Robot.mc1.SetSpeed(LeftDriveSpeed);
+	robot->DriveLeftSpeed = LeftControllerSpeed;
+	robot->DriveRightSpeed = RightControllerSpeed;
 }

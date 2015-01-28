@@ -2,9 +2,9 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-Claw::Claw()
+Claw::Claw(Robot *p)
 {
-	
+	robot = p;
 }
 
 void Claw::Task()

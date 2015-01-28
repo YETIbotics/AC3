@@ -23,7 +23,7 @@ class Controller
    private:
 
     XBOXRECV Xbox;
-    const int joystickMinThresh = 1500;
+    const int joystickMinThresh = 5000;
     USB dummyXboxPointer;
 
 };

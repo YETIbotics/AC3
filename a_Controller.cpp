@@ -45,17 +45,19 @@ void Controller::Task()
 				//L2 Trigger
 		        if (Xbox.getButtonPress(R2, i)) 
 		        {
-		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(L2, i) * -1; 
+		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(R2, i) * -1; 
 		        }
 		        //R2 Trigger
 		        else if (Xbox.getButtonPress(L2, i)) 
 		        {
-		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(R2, i); 
+		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(L2, i); 
 		        }
 		        else
 		        {
 		          TriggerAggregate = 0.0;
 		        }
+
+		        
 
 		        if (Xbox.getButtonPress(L1, i))
 		        {

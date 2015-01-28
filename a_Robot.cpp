@@ -1,3 +1,5 @@
+
+
 #include "a_Robot.h"
 
 // Constructors ////////////////////////////////////////////////////////////////
@@ -9,20 +11,197 @@ Robot::Robot()
 , encDriveLeft(_drive_Left_encInt, _drive_Left_encDig)
 , encLiftRight(_lift_Right_encInt, _lift_Right_encDig)
 , encLiftLeft(_lift_Left_encInt, _lift_Left_encDig)
+, encClaw(_claw_encInt, _claw_encDig)
 {
 	Usb.Init();
+
+    mc1.init();
+    mc2.init();
+
+    serIntake.attach(_intake_PWM);
+    serArm.attach(_arm_PWM);
+    serClaw.attach(_claw_PWM);
+
+	DriveRightSpeed = 0;
+    DriveLeftSpeed = 0;
+    LiftLeftSpeed = 0;
+    LiftRightSpeed = 0;
+    IntakeSpeed = 0;
+    ArmSpeed = 0;
+    ClawPower = 0;
+
+    //Expect 0-255
+    LEDRed = 0;
+    LEDBlue = 0;
+    LEDGreen = 0;
 }
 
 void Robot::Read(){
 	Usb.Task();
+
+
+
+	_encDriveRight = encDriveRight.read();
+
+
+    _encDriveLeft = encDriveLeft.read();
+    _encLiftRight = encLiftRight.read();
+    _encLiftLeft = encLiftLeft.read();
+    _encClaw = encClaw.read();
+    _leftLimitSwitch = digitalRead(_lift_Left_Limit);
+    _rightLimitSwitch = digitalRead(_lift_Right_Limit);
+    _driveLeftCurrent = mc2.getM2CurrentMilliamps();
+    _driveRightCurrent = mc1.getM1CurrentMilliamps();
+    _liftLeftCurrent = mc2.getM1CurrentMilliamps();
+    _liftRightCurrent = mc1.getM2CurrentMilliamps();
+
 }
 
 void Robot::Write(){
+	
+	//DriveRightSpeed
+	if(DriveRightSpeed < -400)
+		DriveRightSpeed = -400;
+    if(DriveRightSpeed > 400)
+		DriveRightSpeed = 400;
+    mc1.setM2Speed(DriveRightSpeed);
 
-	//float asdf = controller->LeftJoystick;
+    Serial.print(DriveRightSpeed);
+    Serial.print("\t");
+
+    //DriveLeftSpeed
+    if(DriveLeftSpeed < -400)
+        DriveLeftSpeed = -400;
+    if(DriveLeftSpeed > 400)
+        DriveLeftSpeed = 400;
+    mc2.setM1Speed(DriveLeftSpeed);
+
+    Serial.print(DriveLeftSpeed);
+    Serial.print("\t");
+    
+    //LiftLeftSpeed
+    if(LiftLeftSpeed < -400)
+        LiftLeftSpeed = -400;
+    if(LiftLeftSpeed > 400)
+        LiftLeftSpeed = 400;
+    mc2.setM2Speed(LiftLeftSpeed);
+
+    Serial.print(LiftLeftSpeed);
+    Serial.print("\t");
+
+    //LiftRightSpeed
+    if(LiftRightSpeed < -400)
+        LiftRightSpeed = -400;
+    if(LiftRightSpeed > 400)
+        LiftRightSpeed = 400;
+    mc1.setM1Speed(LiftRightSpeed);
+
+    Serial.print(LiftRightSpeed);
+    Serial.print("\t");
+
+    //IntakeSpeed
+    if(IntakeSpeed < -400)
+        IntakeSpeed = -400;
+    if(IntakeSpeed > 400)
+        IntakeSpeed = 400;
+    //serIntake.write(convertToServo(IntakeSpeed));
+
+    Serial.print(IntakeSpeed);
+    Serial.print("\t");
+
+    //ArmSpeed
+    if(ArmSpeed < -400)
+        ArmSpeed = -400;
+    if(ArmSpeed > 400)
+        ArmSpeed = 400;
+    //serArm.write(convertToServo(ArmSpeed));
+
+    Serial.print(ArmSpeed);
+    Serial.print("\t");
+
+    //ClawPower
+    if(ClawPower < -400)
+        ClawPower = -400;
+    if(ClawPower > 400)
+        ClawPower = 400;
+    //serClaw.write(convertToServo(ClawPower));
+
+    Serial.println(ClawPower);
+
+    
+    
+
+    //Expect 0-255
+    /*float LEDRed;
+    float LEDBlue;
+    float LEDGreen;*/
+    
 }
 
+int Robot::convertToServo(float inVal)
+{
+    if(inVal > 0) 
+    {
+        return ((inVal/400 * (_servoMax - _servoNeut)) + _servoNeut);
+    }
+    else if(inVal < 0)
+    {
+        return ((inVal/400 * (_servoMin - _servoNeut)) + _servoMin);
+    }
+    else
+        return _servoNeut;
+}
+
+
+//ReadOnly Methods
+float Robot::GetEncDriveRight(){
+	return _encDriveRight;
+}
+
+float Robot::GetEncDriveLeft(){
+	return _encDriveLeft;
+}
+
+float Robot::GetEncLiftRight(){
+	return _encLiftRight;
+}
+
+float Robot::GetEncLiftLeft(){
+	return _encLiftLeft;
+}
+
+float Robot::GetEncClaw(){
+	return _encClaw;
+}
+
+bool Robot::GetLeftLimitSwitch(){
+	return _leftLimitSwitch;
+}
+
+bool Robot::GetRightLimitSwitch(){
+	return _rightLimitSwitch;
+}
+
+float Robot::GetDriveLeftCurrent(){
+	return _driveLeftCurrent;
+}
+
+float Robot::GetDriveRightCurrent(){
+	return _driveRightCurrent;
+}
+
+float Robot::GetLiftLeftCurrent(){
+	return _liftLeftCurrent;
+}
+
+float Robot::GetLiftRightCurrent(){
+	return _liftRightCurrent;
+}
+
+
+/*
 void Robot::SetController(Controller *p)
 {
 	controller = p;
 }
+*/
