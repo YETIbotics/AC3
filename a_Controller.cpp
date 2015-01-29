@@ -52,6 +52,7 @@ void Controller::Task()
 		        //R2 Trigger
 		        else if (Xbox.getButtonPress(L2, i)) 
 		        {
+		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(L2, i) * -1; 
 		        }
 		        else
 		        {

@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "a_Robot.h"
+#include "SimpleTimer.h"
 
 class Claw 
 {
@@ -15,14 +16,13 @@ class Claw
 
     int ControllerClawPosition;
     int ControllerArmSpeed;
-
-    unsigned long delatch = 0;
    
   private:
   	Robot *robot;
 
   	int clawTimerId;
 
+  	SimpleTimer timer;
 
   	void turnOffClaw();
     

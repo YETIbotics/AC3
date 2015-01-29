@@ -13,18 +13,18 @@ void Claw::turnOffClaw()
 {
 	Serial.println("turnOffClaw");
 	robot->ClawPower = 0;
-	//timer.disable(clawTimerId);
+	timer.disable(clawTimerId);
 }
 
 void Claw::init()
 {
-	//timer_delegate del = MakeDelegate(this, &Claw::turnOffClaw);
-	//clawTimerId = timer.setInterval(500, del);
+	timer_delegate del = MakeDelegate(this, &Claw::turnOffClaw);
+	clawTimerId = timer.setInterval(500, del);
 }
 
 void Claw::Task()
 {
-	
+	timer.run();
 
 	if(ControllerClawPosition == 1)
 		robot->ClawPower = -400;
@@ -33,17 +33,9 @@ void Claw::Task()
 		if(robot->ClawPower == -400)
 		{
 			robot->ClawPower = 400;
-			delatch = millis() + 500;
-			//timer.enable(clawTimerId);
+			timer.enable(clawTimerId);
 		}
 	}
-
-	if(delatch != 0 && millis() > delatch)
-	{
-		turnOffClaw();
-		delatch = 0;
-	}
-
 	//Serial.println(ControllerArmSpeed);
 	if(ControllerArmSpeed == 1)
 		robot->ArmSpeed = 200;
