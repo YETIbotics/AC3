@@ -6,7 +6,8 @@ Claw::Claw(Robot *p)
 {
 	robot = p;
 
-	clawTimerId = timer.setInterval(500, turnOffClaw);
+	timer_delegate del = MakeDelegate(this, &Claw::turnOffClaw);
+	clawTimerId = timer.setInterval(500, del);
 }
 
 void Claw::turnOffClaw()
@@ -17,6 +18,8 @@ void Claw::turnOffClaw()
 
 void Claw::Task()
 {
+	
+
 	if(ControllerClawPosition == 1)
 		robot->ClawPower = 400;
 	else

@@ -22,19 +22,51 @@
  * write to the Free Software Foundation, Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
+ * EDIT 19-01-2012
+ * Author: info@aduen.nl
+ *
+ * Removed all the arrays execpt for one and made it into an array of structs
+ *
+ * Removed the function pointer and replaced it with a delegate
+ *
+ * Fixed bug, defining short delays and long delays caused problems because the
+ * numTimers would just decrease although there was still a running timer in that
+ * part of the array.
+ *
+ * Added the getAvailableSpot function to overcome this problem and made the getNumTimers
+ * dynamic.
+ *
+ * Added an int as callback function parameter, it either can be used to know which timer is calling
+ * the function or you can use the overloaded setTimer function to add your own paramter.
  */
-
 
 #ifndef SIMPLETIMER_H
 #define SIMPLETIMER_H
 
-#if defined(ARDUINO) && ARDUINO >= 100
 #include <Arduino.h>
-#else
-#include <WProgram.h>
-#endif
+#include "FastDelegate.h"
 
-typedef void (*timer_callback)(void);
+using namespace fastdelegate;
+
+typedef FastDelegate0<void> timer_delegate;
+
+typedef struct {
+	// pointer to the callback functions
+	timer_delegate callback;
+	// delay values
+	long unsigned int delay;
+	// value returned by the millis() function
+	// in the previous run() call
+	long unsigned int prev_millis;
+	// number of runs to be executed for each timer
+	int maxRuns;
+	// number of executed runs for each timer
+	int numRuns;
+	// optional parameter for callback function, default timer_id is used
+	int params;
+	// which timers are enabled
+	bool enabled;
+} timer_call;
 
 class SimpleTimer {
 
@@ -53,19 +85,17 @@ public:
     void run();
 
     // call function f every d milliseconds
-    int setInterval(long d, timer_callback f);
+    int setInterval(long d, timer_delegate f);
 
     // call function f once after d milliseconds
-    int setTimeout(long d, timer_callback f);
+    int setTimeout(long d, timer_delegate f);
 
     // call function f every d milliseconds for n times
-    int setTimer(long d, timer_callback f, int n);
+    int setTimer(long d, timer_delegate f, int n, int param);
+    int setTimer(long d, timer_delegate f, int n);
 
     // destroy the specified timer
     void deleteTimer(int numTimer);
-
-    // restart the specified timer
-    void restartTimer(int numTimer);
 
     // returns true if the specified timer is enabled
     boolean isEnabled(int numTimer);
@@ -76,49 +106,20 @@ public:
     // disables the specified timer
     void disable(int numTimer);
 
-    // enables the specified timer if it's currently disabled,
-    // and vice-versa
+    // enables or disables the specified timer
+    // based on its current state
     void toggle(int numTimer);
 
     // returns the number of used timers
     int getNumTimers();
 
-    // returns the number of available timers
-    int getNumAvailableTimers() { return MAX_TIMERS - numTimers; };
-
 private:
-    // deferred call constants
-    const static int DEFCALL_DONTRUN = 0;       // don't call the callback function
-    const static int DEFCALL_RUNONLY = 1;       // call the callback function but don't delete the timer
-    const static int DEFCALL_RUNANDDEL = 2;      // call the callback function and delete the timer
-
-    // find the first available slot
-    int findFirstFreeSlot();
-
-    // value returned by the millis() function
     // in the previous run() call
-    unsigned long prev_millis[MAX_TIMERS];
+    timer_call calls[MAX_TIMERS];
 
-    // pointers to the callback functions
-    timer_callback callbacks[MAX_TIMERS];
+    int num_timers;
 
-    // delay values
-    long delays[MAX_TIMERS];
-
-    // number of runs to be executed for each timer
-    int maxNumRuns[MAX_TIMERS];
-
-    // number of executed runs for each timer
-    int numRuns[MAX_TIMERS];
-
-    // which timers are enabled
-    boolean enabled[MAX_TIMERS];
-
-    // deferred function call (sort of) - N.B.: this array is only used in run()
-    int toBeCalled[MAX_TIMERS];
-
-    // actual number of timers in use
-    int numTimers;
+    int getAvailableSpot();
 };
 
 #endif
