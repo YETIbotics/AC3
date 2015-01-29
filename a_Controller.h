@@ -20,6 +20,9 @@ class Controller
     float TriggerAggregate;
     int LR2Aggregate;
 
+    int DPadLeftRight;
+    int APress;
+
    private:
 
     XBOXRECV Xbox;

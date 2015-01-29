@@ -17,6 +17,7 @@ class Robot
 
     void Read();
     void Write();
+    void init();
     //void SetController(Controller *controller);
 
     //Read Only Items

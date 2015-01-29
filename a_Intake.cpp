@@ -9,5 +9,11 @@ Intake::Intake(Robot *p)
 
 void Intake::Task()
 {
-	robot->IntakeSpeed = ControllerSpeed;
+	if(ControllerSpeed == 1)
+		robot->IntakeSpeed = 400;
+	else if(ControllerSpeed == -1)
+		robot->IntakeSpeed = -400;
+	else
+		robot->IntakeSpeed = 0;
+	
 }

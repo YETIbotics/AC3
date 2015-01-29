@@ -5,22 +5,18 @@
 // Constructors ////////////////////////////////////////////////////////////////
 
 Robot::Robot()
-: mc1(_mc1_INA1, _mc1_INB1, _mc1_EN1DIAG1, _mc1_CS1, _mc1_INA2, _mc1_INB2, _mc1_EN2DIAG2, _mc1_CS2, _mc1_PWM1, _mc1_PWM2)
-, mc2(_mc2_INA1, _mc2_INB1, _mc2_EN1DIAG1, _mc2_CS1, _mc2_INA2, _mc2_INB2, _mc2_EN2DIAG2, _mc2_CS2, _mc2_PWM1, _mc2_PWM2)
-, encDriveRight(_drive_Right_encInt, _drive_Right_encDig)
-, encDriveLeft(_drive_Left_encInt, _drive_Left_encDig)
-, encLiftRight(_lift_Right_encInt, _lift_Right_encDig)
-, encLiftLeft(_lift_Left_encInt, _lift_Left_encDig)
-, encClaw(_claw_encInt, _claw_encDig)
+
 {
 	Usb.Init();
 
-    mc1.init();
-    mc2.init();
+    mc1.init(_mc1_INA1, _mc1_INB1, _mc1_EN1DIAG1, _mc1_CS1, _mc1_INA2, _mc1_INB2, _mc1_EN2DIAG2, _mc1_CS2, _mc1_PWM1, _mc1_PWM2);
+    mc2.init(_mc2_INA1, _mc2_INB1, _mc2_EN1DIAG1, _mc2_CS1, _mc2_INA2, _mc2_INB2, _mc2_EN2DIAG2, _mc2_CS2, _mc2_PWM1, _mc2_PWM2);
 
-    serIntake.attach(_intake_PWM);
-    serArm.attach(_arm_PWM);
-    serClaw.attach(_claw_PWM);
+    encDriveRight.init(_drive_Right_encInt, _drive_Right_encDig);
+    encDriveLeft.init(_drive_Left_encInt, _drive_Left_encDig);
+    encLiftRight.init(_lift_Right_encInt, _lift_Right_encDig);
+    encLiftLeft.init(_lift_Left_encInt, _lift_Left_encDig);
+    encClaw.init(_claw_encInt, _claw_encDig);
 
 	DriveRightSpeed = 0;
     DriveLeftSpeed = 0;
@@ -34,17 +30,27 @@ Robot::Robot()
     LEDRed = 0;
     LEDBlue = 0;
     LEDGreen = 0;
+
+}
+
+void Robot::init(){
+
+    serIntake.attach(_intake_PWM);
+    serIntake.write(90);
+
+    serArm.attach(_arm_PWM);
+    serArm.write(90);
+
+    serClaw.attach(_claw_PWM);
+    serClaw.write(90);
 }
 
 void Robot::Read(){
 	Usb.Task();
 
-
-
 	_encDriveRight = encDriveRight.read();
-
-
     _encDriveLeft = encDriveLeft.read();
+    _encDriveRight = encDriveRight.read();
     _encLiftRight = encLiftRight.read();
     _encLiftLeft = encLiftLeft.read();
     _encClaw = encClaw.read();
@@ -55,6 +61,22 @@ void Robot::Read(){
     _liftLeftCurrent = mc2.getM1CurrentMilliamps();
     _liftRightCurrent = mc1.getM2CurrentMilliamps();
 
+/*
+    Serial.print(_encDriveLeft);
+    Serial.print("\t");
+
+    Serial.print(_encDriveRight);
+    Serial.print("\t");
+
+    Serial.print(_encLiftLeft);
+    Serial.print("\t");
+
+    Serial.print(_encLiftRight);
+    Serial.print("\t");
+
+    Serial.println(_encClaw);
+*/
+
 }
 
 void Robot::Write(){
@@ -64,69 +86,68 @@ void Robot::Write(){
 		DriveRightSpeed = -400;
     if(DriveRightSpeed > 400)
 		DriveRightSpeed = 400;
-    mc1.setM2Speed(DriveRightSpeed);
+    mc1.setM1Speed(DriveRightSpeed);
 
-    Serial.print(DriveRightSpeed);
-    Serial.print("\t");
+    //Serial.print(DriveRightSpeed);
+    //Serial.print("\t");
 
     //DriveLeftSpeed
     if(DriveLeftSpeed < -400)
         DriveLeftSpeed = -400;
     if(DriveLeftSpeed > 400)
         DriveLeftSpeed = 400;
-    mc2.setM1Speed(DriveLeftSpeed);
+    mc2.setM2Speed(DriveLeftSpeed);
 
-    Serial.print(DriveLeftSpeed);
-    Serial.print("\t");
+    //Serial.print(DriveLeftSpeed);
+    //Serial.print("\t");
     
     //LiftLeftSpeed
     if(LiftLeftSpeed < -400)
         LiftLeftSpeed = -400;
     if(LiftLeftSpeed > 400)
         LiftLeftSpeed = 400;
-    mc2.setM2Speed(LiftLeftSpeed);
+    mc2.setM1Speed(LiftLeftSpeed);
 
-    Serial.print(LiftLeftSpeed);
-    Serial.print("\t");
+    //Serial.print(LiftLeftSpeed);
+    //Serial.print("\t");
 
     //LiftRightSpeed
     if(LiftRightSpeed < -400)
         LiftRightSpeed = -400;
     if(LiftRightSpeed > 400)
         LiftRightSpeed = 400;
-    mc1.setM1Speed(LiftRightSpeed);
+    mc1.setM2Speed(LiftRightSpeed);
 
-    Serial.print(LiftRightSpeed);
-    Serial.print("\t");
+    //Serial.print(LiftRightSpeed);
+    //Serial.print("\t");
 
     //IntakeSpeed
     if(IntakeSpeed < -400)
         IntakeSpeed = -400;
     if(IntakeSpeed > 400)
         IntakeSpeed = 400;
-    //serIntake.write(convertToServo(IntakeSpeed));
+    serIntake.write(convertToServo(IntakeSpeed));
 
-    Serial.print(IntakeSpeed);
-    Serial.print("\t");
+    
 
     //ArmSpeed
     if(ArmSpeed < -400)
         ArmSpeed = -400;
     if(ArmSpeed > 400)
         ArmSpeed = 400;
-    //serArm.write(convertToServo(ArmSpeed));
+    serArm.write(convertToServo(ArmSpeed));
 
-    Serial.print(ArmSpeed);
-    Serial.print("\t");
+    //Serial.print(ArmSpeed);
+    //Serial.print("\t");
 
     //ClawPower
     if(ClawPower < -400)
         ClawPower = -400;
     if(ClawPower > 400)
         ClawPower = 400;
-    //serClaw.write(convertToServo(ClawPower));
+    serClaw.write(convertToServo(ClawPower));
 
-    Serial.println(ClawPower);
+    //Serial.println(ClawPower);
 
     
     
@@ -140,13 +161,15 @@ void Robot::Write(){
 
 int Robot::convertToServo(float inVal)
 {
+
     if(inVal > 0) 
     {
         return ((inVal/400 * (_servoMax - _servoNeut)) + _servoNeut);
     }
     else if(inVal < 0)
     {
-        return ((inVal/400 * (_servoMin - _servoNeut)) + _servoMin);
+        //Serial.println(((inVal/400 * (_servoNeut - _servoMin)) + _servoNeut));
+        return ((inVal/400 * (_servoNeut - _servoMin)) + _servoNeut);
     }
     else
         return _servoNeut;

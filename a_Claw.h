@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "a_Robot.h"
+#include "SimpleTimer.h"
 
 class Claw 
 {
@@ -11,9 +12,18 @@ class Claw
     Claw(Robot *p); // Default pin selection.
 
     void Task();
+
+    int ControllerClawPosition;
+    int ControllerArmSpeed;
    
   private:
   	Robot *robot;
+
+  	int clawTimerId;
+
+  	SimpleTimer timer;
+
+  	void turnOffClaw();
     
 };
 

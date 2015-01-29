@@ -15,6 +15,8 @@ Controller::Controller(USB *p)
 	RightJoystick = 0.0;
 	TriggerAggregate = 0.0;
 	LR2Aggregate = 0;
+	DPadLeftRight = 0;
+	APress = 0;
 }
 
 void Controller::Task()
@@ -57,7 +59,18 @@ void Controller::Task()
 		          TriggerAggregate = 0.0;
 		        }
 
-		        
+		        if (Xbox.getButtonPress(LEFT, i)) 
+		        {
+		          DPadLeftRight = 1; 
+		        }
+		        else if (Xbox.getButtonPress(RIGHT, i)) 
+		        {
+		          DPadLeftRight = -1; 
+		        }
+		        else
+		        {
+		          DPadLeftRight = 0;
+		        }
 
 		        if (Xbox.getButtonPress(L1, i))
 		        {
@@ -75,6 +88,17 @@ void Controller::Task()
 		          LR2Aggregate = 0;
 		          
 		        }
+
+		        if (Xbox.getButtonPress(A, i))
+		        {
+		          APress = 1;
+		        }
+		        else
+		        {
+		          APress = 0;
+		        }
+
+
 			}
 		}
 	}

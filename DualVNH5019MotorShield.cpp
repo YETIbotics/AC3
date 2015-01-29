@@ -1,7 +1,7 @@
 #include "DualVNH5019MotorShield.h"
 
 // Constructors ////////////////////////////////////////////////////////////////
-/*
+
 DualVNH5019MotorShield::DualVNH5019MotorShield()
 {
   //Pin map
@@ -16,7 +16,7 @@ DualVNH5019MotorShield::DualVNH5019MotorShield()
   _PWM1 = 9;
   _PWM2 = 10;
 }
-*/
+
 
 DualVNH5019MotorShield::DualVNH5019MotorShield(unsigned char INA1, unsigned char INB1, unsigned char EN1DIAG1, unsigned char CS1, 
                                                unsigned char INA2, unsigned char INB2, unsigned char EN2DIAG2, unsigned char CS2,
@@ -34,6 +34,24 @@ DualVNH5019MotorShield::DualVNH5019MotorShield(unsigned char INA1, unsigned char
   _CS2 = CS2;
   _PWM1 = PWM1;
   _PWM2 = PWM2;
+}
+
+void DualVNH5019MotorShield::init(unsigned char INA1, unsigned char INB1, unsigned char EN1DIAG1, unsigned char CS1, 
+                                               unsigned char INA2, unsigned char INB2, unsigned char EN2DIAG2, unsigned char CS2,
+                                               unsigned char PWM1, unsigned char PWM2)
+{
+  _INA1 = INA1;
+  _INB1 = INB1;
+  _EN1DIAG1 = EN1DIAG1;
+  _CS1 = CS1;
+  _INA2 = INA2;
+  _INB2 = INB2;
+  _EN2DIAG2 = EN2DIAG2;
+  _CS2 = CS2;
+  _PWM1 = PWM1;
+  _PWM2 = PWM2;
+
+  init();
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -101,6 +119,7 @@ void DualVNH5019MotorShield::setM1Speed(int speed)
     digitalWrite(_INB1,LOW);
   }
 
+  //Serial.println(speed);
 
 }
 
@@ -136,6 +155,7 @@ void DualVNH5019MotorShield::setM2Speed(int speed)
     digitalWrite(_INA2,HIGH);
     digitalWrite(_INB2,LOW);
   }
+  //Serial.println(speed);
 }
 
 // Set speed for motor 1 and 2

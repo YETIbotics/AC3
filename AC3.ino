@@ -1,3 +1,13 @@
+
+
+//Indirectly Used Library Includes
+#include "XBOXRECV.h"
+#include "DualVNH5019MotorShield.h"
+#include "SimpleTimer.h"
+#include "PID_v1.h"
+#include "Encoder.h"
+
+//Directly Used Library Includes
 #include "a_Robot.h"
 #include "a_Controller.h"
 
@@ -5,12 +15,8 @@
 #include "a_Drive.h"
 #include "a_Intake.h"
 #include "a_Claw.h"
-
-//Indirectly Used Library Includes
 #include <Servo.h>
-#include "XBOXRECV.h"
-#include "DualVNH5019MotorShield.h"
-#include "Encoder.h"
+
 
 Robot Robot;
 Controller Controller(&Robot.Usb);
@@ -20,11 +26,20 @@ Drive Drive(&Robot);
 Intake Intake(&Robot);
 Claw Claw(&Robot);
 
+
+
 void setup() {
 	Serial.begin(115200);
 	while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
 
+
+  Robot.init();
   //Robot.SetController(&Controller);
+  //Servo sIntake;
+  //sIntake.attach(7);
+  //sIntake.write(90);
+  //delay(500);
+  //sIntake.write(29);
 
 }
 
@@ -47,7 +62,7 @@ void loop() {
   //Serial.println(Robot.DriveLeftSpeed);
   
 
-	delay(100);
+	delay(20);
 
 }
 
@@ -60,5 +75,7 @@ void MapRobot()
 
   Intake.ControllerSpeed = Controller.LR2Aggregate;
 
+  Claw.ControllerClawPosition = Controller.APress;
+  Claw.ControllerArmSpeed = Controller.DPadLeftRight;
 
 }
