@@ -47,12 +47,11 @@ void Controller::Task()
 				//L2 Trigger
 		        if (Xbox.getButtonPress(R2, i)) 
 		        {
-		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(R2, i) * -1; 
+		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(R2, i) * 1; 
 		        }
 		        //R2 Trigger
 		        else if (Xbox.getButtonPress(L2, i)) 
 		        {
-		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(L2, i); 
 		        }
 		        else
 		        {
@@ -61,11 +60,11 @@ void Controller::Task()
 
 		        if (Xbox.getButtonPress(LEFT, i)) 
 		        {
-		          DPadLeftRight = 1; 
+		          DPadLeftRight = -1; 
 		        }
 		        else if (Xbox.getButtonPress(RIGHT, i)) 
 		        {
-		          DPadLeftRight = -1; 
+		          DPadLeftRight = 1; 
 		        }
 		        else
 		        {

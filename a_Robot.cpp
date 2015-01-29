@@ -137,7 +137,7 @@ void Robot::Write(){
         ArmSpeed = 400;
     serArm.write(convertToServo(ArmSpeed));
 
-    //Serial.print(ArmSpeed);
+    //Serial.println(ArmSpeed);
     //Serial.print("\t");
 
     //ClawPower
@@ -164,6 +164,7 @@ int Robot::convertToServo(float inVal)
 
     if(inVal > 0) 
     {
+        //Serial.println(((inVal/400 * (_servoMax - _servoNeut)) + _servoNeut));
         return ((inVal/400 * (_servoMax - _servoNeut)) + _servoNeut);
     }
     else if(inVal < 0)

@@ -81,7 +81,7 @@ class Robot
     int convertToServo(float inVal);
 
     //ESC
-    const int _servoMax = 157;
+    const int _servoMax = 150;
     const int _servoMin = 29;
     const int _servoNeut = 90;
 

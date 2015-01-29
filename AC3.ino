@@ -34,6 +34,7 @@ void setup() {
 
 
   Robot.init();
+  Claw.init();
   //Robot.SetController(&Controller);
   //Servo sIntake;
   //sIntake.attach(7);
