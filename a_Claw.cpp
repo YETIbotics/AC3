@@ -3,6 +3,7 @@
 // Constructors ////////////////////////////////////////////////////////////////
 
 Claw::Claw(Robot *p)
+: armPID(&armCurPos, &armPIDOut, &armSetPoint,armKP,armKI,armKD, DIRECT)
 {
 	robot = p;
 
@@ -25,6 +26,8 @@ void Claw::init()
 void Claw::Task()
 {
 	timer.run();
+
+	armPID.Compute();
 
 	if(ControllerClawPosition == 1)
 		robot->ClawPower = -400;

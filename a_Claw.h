@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "a_Robot.h"
 #include "SimpleTimer.h"
+#include "PID_v1.h"
 
 class Claw 
 {
@@ -24,7 +25,21 @@ class Claw
 
   	SimpleTimer timer;
 
+    //PID
+    double armCurPos = 0;
+    double armSetPoint = 0;
+    double armPIDOut = 0;
+    bool armPIDEnable = false;
+    const int armPIDTolerence = 5;
+    const double armKP = 1;
+    const double armKI = 1;
+    const double armKD = 1;
+
+    PID armPID;
+
   	void turnOffClaw();
+
+
     
 };
 
