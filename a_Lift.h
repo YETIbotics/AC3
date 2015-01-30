@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "a_Robot.h"
+#include "PID_v1.h"
 
 class Lift 
 {
@@ -16,6 +17,18 @@ class Lift
    
   private:
   	Robot *robot;
+
+  	//PID
+    double liftCurPos = 0;
+    double liftSetPoint = 0;
+    double liftPIDOut = 0;
+    bool liftPIDEnable = false;
+    const int liftPIDTolerence = 5;
+    const double liftKP = 1;
+    const double liftKI = 1;
+    const double liftKD = 1;
+
+    PID liftPID;
     
 };
 
