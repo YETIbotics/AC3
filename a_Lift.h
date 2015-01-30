@@ -30,19 +30,16 @@ class Lift
 
     PID liftPID; 
 
-
-};
-
 class Right
 {
 public:
         //constr
-        Right(Robot *p);
+        Right();
 
     void Task();
 
 private:
-    Robot *robot;
+    
     
     //Right PID
     double rightCurPos = 0;
@@ -57,6 +54,10 @@ private:
     PID rightPID;
 
 };
+
+};
+
+
 
 
 

@@ -8,11 +8,6 @@ Lift::Lift(Robot *p)
 	robot = p;
 }
 
-Right::Right(Robot *p)
-: rightPID(&rightCurPos, &rightPIDOut, &rightSetPoint, rightKP, rightKI, rightKD, DIRECT)
-{
-	robot = p;
-}
 
 void Lift::Task()
 {
@@ -23,7 +18,13 @@ void Lift::Task()
 	robot->LiftLeftSpeed = ControllerSpeed;
 }
 
-void Right::Task()
+Lift::Right::Right()
+: rightPID(&rightCurPos, &rightPIDOut, &rightSetPoint, rightKP, rightKI, rightKD, DIRECT)
+{
+
+}
+
+void Lift::Right::Task()
 {
 	rightPID.Compute();
 }
