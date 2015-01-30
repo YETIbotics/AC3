@@ -18,7 +18,7 @@ class Lift
   private:
   	Robot *robot;
 
-  	//PID
+  	//LiftPID
     double liftCurPos = 0;
     double liftSetPoint = 0;
     double liftPIDOut = 0;
@@ -29,6 +29,18 @@ class Lift
     const double liftKD = 1;
 
     PID liftPID;
+
+    //Right PID
+    double rightCurPos = 0;
+    double rightSetPoint = 0;
+    double rightPIDOut = 0;
+    bool rightPIDEnable = false;
+    const int rightPIDTolerence = 5;
+    const double rightKP = 1;
+    const double rightKI = 1;
+    const double rightKD = 1;
+
+    PID rightPID;
     
 };
 
