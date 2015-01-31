@@ -17,6 +17,7 @@ Controller::Controller(USB *p)
 	LR2Aggregate = 0;
 	DPadLeftRight = 0;
 	APress = 0;
+	YPress = 0;
 }
 
 void Controller::Task()
@@ -96,6 +97,15 @@ void Controller::Task()
 		        else
 		        {
 		          APress = 0;
+		        }
+
+		        if (Xbox.getButtonPress(Y, i))
+		        {
+		          YPress = 1;
+		        }
+		        else
+		        {
+		          YPress = 0;
 		        }
 
 

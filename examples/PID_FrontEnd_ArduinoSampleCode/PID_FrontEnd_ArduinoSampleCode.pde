@@ -1,127 +1,51 @@
+/******************************************************************
+ * PID Simple Example (Augmented with Processing.org Communication)
+ * Reading analog input 0 to control analog PWM output 3
+ ******************************************************************/
 
+#include <PID_Beta6.h>
 
-//Indirectly Used Library Includes
-#include "XBOXRECV.h"
-#include "DualVNH5019MotorShield.h"
-#include "SimpleTimer.h"
-#include "PID_v1.h"
-#include "Encoder.h"
-
-//Directly Used Library Includes
-#include "a_Robot.h"
-#include "a_Controller.h"
-
-#include "a_Lift.h"
-#include "a_Drive.h"
-#include "a_Intake.h"
-#include "a_Claw.h"
-#include <Servo.h>
-
-
-Robot Robot;
-Controller Controller(&Robot.Usb);
-
-Lift Lift(&Robot);
-Drive Drive(&Robot);
-Intake Intake(&Robot);
-Claw Claw(&Robot);
-
-unsigned long serialTime;
-
+//Define Variables we'll be connecting to
 double Setpoint, Input, Output;
-PID myPID;
+int inputPin=0, outputPin=3;
 
-int runningProgNum = 0;
-
-void setup() {
-	Serial.begin(115200);
-	while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+//Specify the links and initial tuning parameters
+PID myPID(&Input, &Output, &Setpoint,2,5,1);
 
 
-  Robot.init();
-  Claw.init();
-  Lift.init();
-  Drive.init();
+unsigned long serialTime; //this will help us know when to talk with processing
+
+void setup()
+{
+  //initialize the serial link with processing
+  Serial.begin(9600);
   
+  //initialize the variables we're linked to
+  Input = analogRead(inputPin);
+  Setpoint = 100;
+
+  //turn the PID on
+  myPID.SetMode(AUTO);
 }
 
-void loop() {
+void loop()
+{
+  //pid-related code
+  Input = analogRead(inputPin);
+  myPID.Compute();
+  analogWrite(outputPin,Output);
+  
 
-	Robot.Read();
-	Controller.Task();
-
-  MapRobot();
-
-  Lift.Task();
-  Drive.Task();
-  Intake.Task();
-  Claw.Task();
-
-  Robot.Write();
-
+  
+  //send-receive with processing if it's time
   if(millis()>serialTime)
   {
-    myPID = Drive.drivePID;
-    Setpoint = Drive.driveSetPoint;
-    Input = Drive.driveCurPos;
-    Output = Drive.drivePIDOut;
-
     SerialReceive();
     SerialSend();
     serialTime+=500;
   }
-
-	//Serial.print("Robot. - DriveLeftSpeed :: ");
-  //Serial.println(Robot.DriveLeftSpeed);
   
-  runAuton();
-	delay(20);
-
-}
-
-void MapRobot()
-{
-  Drive.LeftControllerSpeed = Controller.LeftJoystick;
-  Drive.RightControllerSpeed = Controller.RightJoystick;
-
-  Lift.ControllerSpeed = Controller.TriggerAggregate;
-
-  Intake.ControllerSpeed = Controller.LR2Aggregate;
-
-  Claw.ControllerClawPosition = Controller.APress;
-  Claw.ControllerArmSpeed = Controller.DPadLeftRight;
-
-  Claw.ControllerYPress = Controller.YPress;
-
-  if(Controller.YPress == 1)
-  {
-    runningProgNum = 1;
-  }
-
-}
-
-void runAuton()
-{
-  switch(runningProgNum)
-  {
-    case 1:
-      skyriseLeft();
-      break;
-    case 2:
-      skyriseRight();
-      break;
-  }
-
-}
-
-void skyriseLeft()
-{
-
-}
-
-void skyriseRight()
-{
-
+  
 }
 
 
@@ -174,7 +98,7 @@ void SerialReceive()
   // read it into the system
   if(index==25  && (Auto_Man==0 || Auto_Man==1))
   {
-    Drive.driveSetPoint=double(foo.asFloat[0]);
+    Setpoint=double(foo.asFloat[0]);
     //Input=double(foo.asFloat[1]);       // * the user has the ability to send the 
                                           //   value of "Input"  in most cases (as 
                                           //   in this one) this is not needed.
@@ -187,10 +111,10 @@ void SerialReceive()
     p = double(foo.asFloat[3]);           //
     i = double(foo.asFloat[4]);           //
     d = double(foo.asFloat[5]);           //
-    Drive.drivePID.SetTunings(p, i, d);            //
+    myPID.SetTunings(p, i, d);            //
     
     if(Auto_Man==0) myPID.SetMode(MANUAL);// * set the controller mode
-    else myPID.SetMode(AUTOMATIC);             //
+    else myPID.SetMode(AUTO);             //
   }
   Serial.flush();                         // * clear any random data from the serial buffer
 }
@@ -210,13 +134,13 @@ void SerialSend()
   Serial.print(" ");
   Serial.print(Output);   
   Serial.print(" ");
-  Serial.print(myPID.GetKp());   
+  Serial.print(myPID.GetP_Param());   
   Serial.print(" ");
-  Serial.print(myPID.GetKi());   
+  Serial.print(myPID.GetI_Param());   
   Serial.print(" ");
-  Serial.print(myPID.GetKd());   
+  Serial.print(myPID.GetD_Param());   
   Serial.print(" ");
-  if(myPID.GetMode()==AUTOMATIC) Serial.println("Automatic");
+  if(myPID.GetMode()==AUTO) Serial.println("Automatic");
   else Serial.println("Manual");  
 }
 

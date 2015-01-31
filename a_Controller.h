@@ -22,6 +22,7 @@ class Controller
 
     int DPadLeftRight;
     int APress;
+    int YPress;
 
    private:
 

@@ -14,9 +14,16 @@ class Claw
 
     void Task();
     void init();
+    void GoTo(double position);
 
     int ControllerClawPosition;
     int ControllerArmSpeed;
+    int ControllerYPress;
+
+     PID armPID;
+     double armCurPos = 0;
+    double armSetPoint = 0;
+    double armPIDOut = 0;
    
   private:
   	Robot *robot;
@@ -26,16 +33,14 @@ class Claw
   	SimpleTimer timer;
 
     //PID
-    double armCurPos = 0;
-    double armSetPoint = 0;
-    double armPIDOut = 0;
+    
     bool armPIDEnable = false;
     const int armPIDTolerence = 5;
-    const double armKP = 1;
+    const double armKP = 9;
     const double armKI = 1;
     const double armKD = 1;
 
-    PID armPID;
+   
 
   	void turnOffClaw();
 

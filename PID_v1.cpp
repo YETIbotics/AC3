@@ -13,11 +13,15 @@
 
 #include "PID_v1.h"
 
+PID::PID()
+{
+
+}
 /*Constructor (...)*********************************************************
  *    The parameters specified here are those for for which we can't set up 
  *    reliable defaults, so we need to have the user set them.
  ***************************************************************************/
-PID::PID(double* Input, double* Output, double* Setpoint,
+void PID::init(double* Input, double* Output, double* Setpoint,
         double Kp, double Ki, double Kd, int ControllerDirection)
 {
 	
