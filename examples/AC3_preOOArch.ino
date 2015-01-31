@@ -94,8 +94,15 @@ const int _writeRobotInterval = 20;
 const int _readRobotInterval = 25;
 
 //arm
-const float _armMin = 40;
-const float _armMax = 80;
+const float _armMin = 47;
+const float _armMax = 78;
+
+bool _autoRunning = false;
+int _autoProgNum = 0;
+int _autoInterval = 0;
+bool _pauseForPID = false;
+
+const int _maxAutonomousDuration = 60000;
 
 
 
@@ -116,10 +123,14 @@ int _blueVal;
 int _greenVal;
 
 //Define Variables we'll be connecting to
-double Setpoint, Input, Output;
+double armSetpoint, armInput, armOutput;
+double driveSetpoint, driveInput, driveOutput;
+double liftSetpoint, liftInput, liftOutput;
 
 //Specify the links and initial tuning parameters
-PID myPID(&Input, &Output, &Setpoint,1,.75,.2, DIRECT);
+PID armPID(&armInput, &armOutput, &armSetpoint,1,.75,.2, DIRECT);
+PID drivePID(&driveInput, &driveOutput, &driveSetpoint,2,.05,.2, DIRECT);
+PID liftPID(&liftInput, &liftOutput, &liftSetpoint,1,.75,.2, DIRECT);
 
 USB Usb;
 XBOXRECV Xbox(&Usb);
@@ -187,18 +198,30 @@ void setup() {
   timer.setInterval(_readRobotInterval, readRobot);
   timer.setInterval(_writeRobotInterval, writeRobot);
   timer.setInterval(200, changeColor);
-  timer.setInterval(100, runPID);
+  timer.setInterval(20, runPID);
 
   clawTimerId = timer.setInterval(500, turnOffClaw);
 
-  Input = analogRead(0);
-  Setpoint = 60; //_ESC_HK_MAX-40;
+  armInput = 60;
+  armSetpoint = 60; //_ESC_HK_MAX-40;
+
+  driveInput = 0;
+  driveSetpoint = 0;
+
+  liftInput = 0;
+  liftSetpoint = 0;
 
   //turn the PID on
-  myPID.SetMode(AUTOMATIC);
-  myPID.SetOutputLimits(_ESC_HK_MIN+40,_ESC_HK_MAX-40);
+  armPID.SetMode(AUTOMATIC);
+  armPID.SetOutputLimits(_ESC_HK_MIN+40,_ESC_HK_MAX-40);
 
-  if(digitalRead(_rightLimitSwitch) == LOW)
+  drivePID.SetMode(AUTOMATIC);
+  drivePID.SetOutputLimits(-400,400);
+
+  liftPID.SetMode(AUTOMATIC);
+  liftPID.SetOutputLimits(-400,400);
+
+  /*if(digitalRead(_rightLimitSwitch) == LOW)
   {
     LiftSpeed(-200);
     delay(2500);
@@ -225,30 +248,35 @@ void setup() {
       Claw.write(Output);
       delay(50);
 
-    /*Serial.print(Setpoint);
-    Serial.print("\t");
-    Serial.print(Input);
-    Serial.print("\t");
-    Serial.println(Output);*/
+  
       
     }
     Claw.write(90);
     LiftSpeed(200);
     delay(3000);
     LiftSpeed(0);
-  }
+  }*/
 
 
 }
 
 void runPID()
 {
-  if(encClaw.read() >= _armMin && encClaw.read() <= _armMax)
+  if(encClaw.read() >= _armMin-20 && encClaw.read() <= _armMax+20)
   {
-  Input = encClaw.read();
-  myPID.Compute();
-  Claw.write(Output);
+    armInput = encClaw.read();
+    armPID.Compute();
+    Claw.write(armOutput);
   }
+
+    driveInput = encLD.read();
+    drivePID.Compute();
+    //MoveSpeed(driveOutput,driveOutput);
+
+    liftInput = encRL.read();
+    liftPID.Compute();
+    //LiftSpeed(liftOutput);
+
 }
 
 int red = 0;
@@ -328,7 +356,23 @@ void readController(){
           _liftSpeed = 0.0;
         }
 
-        
+        if (Xbox.getButtonClick(Y, i)) 
+        {
+              _autoProgNum = 1;
+              if(_autoProgNum != 0)
+              {
+                if(!_autoRunning)
+                {
+                  // Start Program
+                  autoStart();
+                } 
+                else 
+                {
+                  // Stop Program
+                  autoStop();
+                }
+              }
+          }
 
         if (Xbox.getButtonPress(L1, i))
         {
@@ -348,14 +392,23 @@ void readController(){
         }
 
         if (Xbox.getButtonPress(LEFT, i)) {
-          _clawSpeed = 1;
+          armSetpoint = _armMin;
+
         }
         else if (Xbox.getButtonPress(RIGHT, i)) {
-          _clawSpeed = -1;
+          armSetpoint = _armMax;
+          
         }
         else
         {
           _clawSpeed = 0;
+        }
+
+        if (Xbox.getButtonPress(UP, i)) {
+          driveSetpoint = driveSetpoint + 10;
+
+        Serial.println(driveSetpoint);
+
         }
 
         if (Xbox.getButtonPress(A, i))
@@ -403,20 +456,24 @@ void writeController(){
 }
 
 void readRobot(){
-    /*Serial.print(digitalRead(_encRDDig));
-    Serial.print("\t");
-    Serial.print(digitalRead(_encRLDig));
-    Serial.print("\t");
-    Serial.print(digitalRead(_encLDig));
-    Serial.print("\t");
-    Serial.print(digitalRead(_encLLDig));
-    Serial.print("\t");
+
+
+
+    
     Serial.print(encRD.read());
     Serial.print("\t");
     Serial.print(encLD.read());
     Serial.print("\t");
     Serial.print(encRL.read());
-    Serial.print("\t");*/
+    Serial.print("\t");
+    Serial.print(encLL.read());
+    Serial.print("\t");
+    Serial.println(encClaw.read());
+
+    
+
+
+    //Serial.print("\t");
     //Serial.print(digitalRead(_rightLimitSwitch));
     //Serial.println("\t");
     //Serial.print(digitalRead(_leftLimitSwitch));
@@ -432,11 +489,115 @@ void readRobot(){
 }
 
 void writeRobot(){
-  MoveSpeed(_leftSpeed, _rightSpeed);
-  LiftSpeed(_liftSpeed);
-  IntakeDirection(_intakeDirection);
-  ClawMove(_clawSpeed);
-  ClawDirection(_clawDirection);
+  if (!_autoRunning)
+  {
+    MoveSpeed(_leftSpeed, _rightSpeed);
+    LiftSpeed(_liftSpeed);
+    IntakeDirection(_intakeDirection);
+    ClawMove(_clawSpeed);
+    ClawDirection(_clawDirection);
+
+  } 
+  else 
+  {
+    switch(_autoProgNum)
+    {
+      case 1: 
+        autoRedGoal();
+        break;
+      case 2:
+       // autoBlueGoal();
+        break;
+      case 3: 
+        //autoRedChin();
+        break;
+      case 4:
+        //autoBlueChin();
+        break;
+    }
+    if(!_pauseForPID)
+      _autoInterval = _autoInterval + _writeRobotInterval;
+
+    //Safety switch in case forgot to call autoStop
+    if(_autoInterval > _maxAutonomousDuration)
+    {
+      //autoStop();
+    }
+  }
+}
+
+// ===========================================
+// AUTONOMOUS METHODS
+// ===========================================
+
+
+
+// Initialize Autonomous Mode
+void autoStop()
+{
+  _autoRunning = false;
+  _autoProgNum = 0;
+  _autoInterval = 0;
+}
+
+void autoStart()
+{
+  if(_autoProgNum != 0)
+  {
+    _autoRunning = true;
+    _autoInterval = 0;
+  }
+}
+
+
+void autoRedGoal()
+{
+  
+  switch(_autoInterval)
+  {
+    case 0:
+      LiftSpeed(-200);
+      break;
+
+    case 2500:
+      LiftSpeed(0);
+      ClawSolenoid.write(_ESC_HK_MAX-20);
+      break;
+
+    case 2700:
+      ClawSolenoid.write(93);
+      break;
+
+    case 2800:
+      _pauseForPID = true;
+      armSetpoint = 60; 
+
+      armInput = encClaw.read();
+      armPID.Compute();
+
+      Claw.write(armOutput);
+
+      if(armInput > (armSetpoint-5) && armInput < (armSetpoint+5))
+        _pauseForPID = false;
+
+      break;
+
+    case 2900:
+        Claw.write(90);
+        LiftSpeed(200);
+      break;
+
+      case 5900:
+        LiftSpeed(0);
+        break;
+
+
+    case 6000:
+      
+      autoStop();
+      break;
+      
+  }
 }
 
 

@@ -21,6 +21,7 @@ void Drive::init()
 	drivePID.SetOutputLimits(-400,400);
 }
 
+
 void Drive::Task()
 {
 	//Robot.mc1.SetSpeed(LeftDriveSpeed);
@@ -36,16 +37,17 @@ void Drive::Task()
 	} 
 	else
 	{
+		/*
 		if(abs(driveSetPoint - driveCurPos) > drivePIDTolerence) 
 		{
 			robot->DriveLeftSpeed = drivePIDOut;
 			robot->DriveRightSpeed = drivePIDOut;
 		}
 		else 
-		{
+		{*/
 			robot->DriveLeftSpeed = 0;
 			robot->DriveRightSpeed = 0;
-		}
+		//}
 	}
 
 	

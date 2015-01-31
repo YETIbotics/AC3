@@ -12,13 +12,28 @@ Claw::Claw(Robot *p)
 void Claw::GoTo(double position)
 {
 	armSetPoint = position;
+
+}
+
+void Claw::Clamp()
+{
+	robot->ClawPower = -399;
+	clamping = true;
+}
+void Claw::DeClamp()
+{
+	robot->ClawPower = 0;
+	clamping = false;
 }
 
 void Claw::turnOffClaw()
 {
 	//Serial.println("turnOffClaw");
+	if(!clamping)
+	{
 	robot->ClawPower = 0;
 	timer.disable(clawTimerId);
+}
 }
 
 void Claw::init()
@@ -35,6 +50,7 @@ void Claw::init()
 void Claw::Task()
 {
 	timer.run();
+//	Serial.println(armSetPoint);
 
 	armCurPos = robot->GetEncClaw();
 	armPID.Compute();
@@ -50,15 +66,25 @@ void Claw::Task()
 		}
 	}
 	//Serial.println(ControllerArmSpeed);
-	if(ControllerArmSpeed == 1)
+	if(ControllerArmSpeed == 1) //RIGHT
 	{
 		//robot->ArmSpeed = 200;
-		armSetPoint = armSetPoint + 1;
+		armSetPoint = 82;
 	}
-	else if(ControllerArmSpeed == -1)
+	else if(ControllerArmSpeed == -1) //LEFT
 	{
 		//robot->ArmSpeed = -200;
-		armSetPoint = armSetPoint - 1;
+		armSetPoint = 42;
+	}
+	else if(ControllerArmSpeed == 2) //UP
+	{
+		//robot->ArmSpeed = -200;
+		armSetPoint = 62;
+	}
+	else if(ControllerArmSpeed == -2) //DOWN
+	{
+		//robot->ArmSpeed = -200;
+		armSetPoint = 0;
 	}
 	else
 	{	
@@ -73,8 +99,5 @@ void Claw::Task()
 	{
 		robot->ArmSpeed = 0;
 	}
-	if(ControllerYPress == 1)
-	{
-		armSetPoint = armSetPoint + 1;
-	}
+	
 }

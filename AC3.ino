@@ -26,12 +26,20 @@ Drive Drive(&Robot);
 Intake Intake(&Robot);
 Claw Claw(&Robot);
 
+SimpleTimer timer;
+
+bool _autoRunning = false;
+int _autoProgNum = 0;
+int _autoInterval = 0;
+bool _pauseForPID = false;
+
+const int _maxAutonomousDuration = 60000;
+
 unsigned long serialTime;
 
 double Setpoint, Input, Output;
 PID myPID;
 
-int runningProgNum = 0;
 
 void setup() {
 	Serial.begin(115200);
@@ -42,13 +50,15 @@ void setup() {
   Claw.init();
   Lift.init();
   Drive.init();
+
+  timer.setInterval(20, runStuff);
   
 }
 
-void loop() {
-
-	Robot.Read();
-	Controller.Task();
+void runStuff()
+{
+Robot.Read();
+  Controller.Task();
 
   MapRobot();
 
@@ -59,6 +69,16 @@ void loop() {
 
   Robot.Write();
 
+  Serial.print(Robot.GetEncDriveLeft());
+    Serial.print("\t");
+    Serial.print(Robot.GetEncDriveRight());
+    Serial.print("\t");
+    Serial.print(Robot.GetEncLiftLeft());
+    Serial.print("\t");
+    Serial.print(Robot.GetEncLiftRight());
+    Serial.print("\t");
+    Serial.println(Robot.GetEncClaw());
+/*
   if(millis()>serialTime)
   {
     myPID = Drive.drivePID;
@@ -70,12 +90,40 @@ void loop() {
     SerialSend();
     serialTime+=500;
   }
+*/
+if (_autoRunning)
+  {
+    switch(_autoProgNum)
+    {
+      case 1: 
+        autoRedGoal();
+        break;
+      case 2:
+       // autoBlueGoal();
+        break;
+      case 3: 
+        //autoRedChin();
+        break;
+      case 4:
+        //autoBlueChin();
+        break;
+    }
+    if(!_pauseForPID)
+      _autoInterval = _autoInterval + 20;
 
-	//Serial.print("Robot. - DriveLeftSpeed :: ");
-  //Serial.println(Robot.DriveLeftSpeed);
+    //Safety switch in case forgot to call autoStop
+    if(_autoInterval > _maxAutonomousDuration)
+    {
+      //autoStop();
+    }
+  }
+}
+
+void loop() {
+
+timer.run();
+
   
-  runAuton();
-	delay(20);
 
 }
 
@@ -93,36 +141,113 @@ void MapRobot()
 
   Claw.ControllerYPress = Controller.YPress;
 
-  if(Controller.YPress == 1)
+  
+
+  if(Controller.YPress == 1 && !_autoRunning)
   {
-    runningProgNum = 1;
+      _autoProgNum = 1;
+              if(_autoProgNum != 0)
+              {
+                if(!_autoRunning)
+                {
+                  // Start Program
+                  autoStart();
+                } 
+                else 
+                {
+                  // Stop Program
+                  autoStop();
+                }
+              }
   }
 
 }
 
-void runAuton()
+// ===========================================
+// AUTONOMOUS METHODS
+// ===========================================
+
+
+
+// Initialize Autonomous Mode
+void autoStop()
 {
-  switch(runningProgNum)
+  _autoRunning = false;
+  _autoProgNum = 0;
+  _autoInterval = 0;
+}
+
+void autoStart()
+{
+  if(_autoProgNum != 0)
   {
-    case 1:
-      skyriseLeft();
-      break;
-    case 2:
-      skyriseRight();
-      break;
+    _autoRunning = true;
+    _autoInterval = 0;
   }
-
 }
 
-void skyriseLeft()
+
+void autoRedGoal()
 {
+ // Serial.println(_autoInterval);
+  switch(_autoInterval)
+  {
+    case 0:
+      Drive.GoTo(37);
+      Lift.GoTo(40);
+      break;
 
+    case 1200:
+      Robot.ClawPower = 400;
+      break;
+
+    case 1500:
+      Claw.GoTo(65);
+      break;
+
+
+      
+
+    case 2500:
+      Lift.GoTo(2);
+      break;
+
+    case 2900:
+      Claw.GoTo(42);
+      break;
+
+    case 5000:
+      Claw.Clamp();
+      
+      break;
+
+    case 5500:
+      Lift.GoTo(14);
+      Claw.GoTo(83);
+      break;
+
+    case 7000:
+      Lift.GoTo(2);
+      break;
+    
+    case 8000:
+      Claw.DeClamp();
+      break;
+
+
+
+    
+
+
+
+    case 9000:
+      Claw.DeClamp();
+      autoStop();
+      break;
+      
+  }
 }
 
-void skyriseRight()
-{
-
-}
 
 
 /********************************************

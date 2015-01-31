@@ -16,6 +16,10 @@ class Claw
     void init();
     void GoTo(double position);
 
+    void Clamp();
+    void DeClamp();
+    bool clamping = false;
+
     int ControllerClawPosition;
     int ControllerArmSpeed;
     int ControllerYPress;
@@ -35,8 +39,8 @@ class Claw
     //PID
     
     bool armPIDEnable = false;
-    const int armPIDTolerence = 5;
-    const double armKP = 9;
+    const int armPIDTolerence = 1;
+    const double armKP = 15;
     const double armKI = 1;
     const double armKD = 1;
 

@@ -68,6 +68,14 @@ void Controller::Task()
 		        {
 		          DPadLeftRight = 1; 
 		        }
+		        else if (Xbox.getButtonPress(UP, i)) 
+		        {
+		          DPadLeftRight = 2; 
+		        }
+		        else if (Xbox.getButtonPress(DOWN, i)) 
+		        {
+		          DPadLeftRight = -2; 
+		        }
 		        else
 		        {
 		          DPadLeftRight = 0;
