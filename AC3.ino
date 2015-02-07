@@ -305,8 +305,31 @@ void SerialReceiveMove()
   Serial.flush();                         // * clear any random data from the serial buffer
 
 
-  String funcName = "LT";
-  int funcVal = 10;
+///////////////////////////////////
+
+  String readString, funcName;
+  int funcVal;
+
+  readString="";
+
+  while (Serial.available()) {
+    delay(3);  //delay to allow buffer to fill 
+    if (Serial.available() >0) {
+      char c = Serial.read();  //gets one byte from serial buffer
+      readString += c; //makes the string readString
+    } 
+  }
+
+  if (readString.length() >0) {
+      Serial.println(readString); //see what was received
+      
+      // expect a string like XX #### containing the two servo positions      
+      funcName = readString.substring(0, 2); //get the first four characters
+      String tmpFuncVal = readString.substring(3, 7); //get the next four characters 
+      funcVal = (double)tmpFuncVal;
+
+    
+  } 
 
   if (funcName == "LT")
   {
@@ -337,36 +360,7 @@ void SerialReceiveMove()
     Lift.LiftAdd(funcVal);
   }
 
-  switch("ASDF")
-  {
-      case "LT":
-        Lift.LiftTo(x);
-        break;
-
-      case "LA":
-        Lift.LiftAdd(x);
-        break;
-
-      case "DL":
-        Drive.DriveLeft(x);
-        break;
-
-      case "DR":
-        Drive.DriveRight(x);
-        break;
-
-      case "MO":
-        Drive.Move(x);
-        break;
-
-      case "CL":
-        Claw.Clamp(x);
-        break;
-
-      case "DC":
-        Claw.DeClamp(x);
-        break;
-  }
+  
 }
 
 // getting float values from processing into the arduino
