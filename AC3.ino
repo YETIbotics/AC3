@@ -341,23 +341,23 @@ void SerialReceiveMove()
   }
   else if (funcName == "DL")
   {
-    (funcVal);
+    Drive.DriveLeft(funcVal);
   }
-  else if (funcName == "LA")
+  else if (funcName == "DR")
   {
-    Lift.LiftAdd(funcVal);
+    Drive.DriveRight(funcVal);
   }
-  else if (funcName == "LA")
+  else if (funcName == "MO")
   {
-    Lift.LiftAdd(funcVal);
+    Drive.Move(funcVal);
   }
-  else if (funcName == "LA")
+  else if (funcName == "CL")
   {
-    Lift.LiftAdd(funcVal);
+    Claw.Clamp(funcVal);
   }
-  else if (funcName == "LA")
+  else if (funcName == "DC")
   {
-    Lift.LiftAdd(funcVal);
+    Claw.DeClamp(funcVal);
   }
 
   
