@@ -69,12 +69,12 @@ void Claw::Task()
 	if(ControllerArmSpeed == 1) //RIGHT
 	{
 		//robot->ArmSpeed = 200;
-		armSetPoint = 82;
+		armSetPoint = 78;
 	}
 	else if(ControllerArmSpeed == -1) //LEFT
 	{
 		//robot->ArmSpeed = -200;
-		armSetPoint = 42;
+		armSetPoint = 48;
 	}
 	else if(ControllerArmSpeed == 2) //UP
 	{

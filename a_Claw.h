@@ -39,9 +39,9 @@ class Claw
     //PID
     
     bool armPIDEnable = false;
-    const int armPIDTolerence = 1;
-    const double armKP = 15;
-    const double armKI = 1;
+    const int armPIDTolerence = 0;
+    const double armKP = 25;
+    const double armKI = 0;
     const double armKD = 1;
 
    

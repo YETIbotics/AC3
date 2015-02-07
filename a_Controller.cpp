@@ -29,36 +29,82 @@ void Controller::Task()
 		{
 			if (Xbox.Xbox360Connected[i]) 
 			{
-				if (Xbox.getAnalogHat(LeftHatY, i) > joystickMinThresh || Xbox.getAnalogHat(LeftHatY, i) < -joystickMinThresh) {
-					LeftJoystick = 400.0 / 32767 * Xbox.getAnalogHat(LeftHatY, i); 
-				}
-				else
+				if(i == 0)
 				{
-					LeftJoystick = 0.0;
+
+
+					if (Xbox.getAnalogHat(LeftHatY, i) > joystickMinThresh || Xbox.getAnalogHat(LeftHatY, i) < -joystickMinThresh) {
+						LeftJoystick = 400.0 / 32767 * Xbox.getAnalogHat(LeftHatY, i); 
+					}
+					else
+					{
+						LeftJoystick = 0.0;
+					}
+
+					if (Xbox.getAnalogHat(RightHatY, i) > joystickMinThresh || Xbox.getAnalogHat(RightHatY, i) < -joystickMinThresh) {
+						RightJoystick = 400.0 / 32767 * Xbox.getAnalogHat(RightHatY, i); 
+					}
+					else
+					{
+						RightJoystick = 0.0;
+					}
+
+					//L2 Trigger
+			        if (Xbox.getButtonPress(R2, i)) 
+			        {
+			          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(R2, i) * 1; 
+			        }
+			        //R2 Trigger
+			        else if (Xbox.getButtonPress(L2, i)) 
+			        {
+			          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(L2, i) * -1; 
+			        }
+			        else
+			        {
+			          TriggerAggregate = 0.0;
+			        }
+
+
+
+			        if (Xbox.getButtonPress(L1, i))
+			        {
+			          LR2Aggregate = 1;
+			        
+			        }
+			        //R1 Button
+			        else if (Xbox.getButtonPress(R1, i))
+			        {
+			          LR2Aggregate = -1;
+			          
+			        }
+			        else
+			        {
+			          LR2Aggregate = 0;
+			          
+			        }
+
+
+
+			        if (Xbox.getButtonPress(Y, i))
+			        {
+			          YPress = 1;
+			        }
+			        else
+			        {
+			          YPress = 0;
+			        }
 				}
 
-				if (Xbox.getAnalogHat(RightHatY, i) > joystickMinThresh || Xbox.getAnalogHat(RightHatY, i) < -joystickMinThresh) {
-					RightJoystick = 400.0 / 32767 * Xbox.getAnalogHat(RightHatY, i); 
-				}
-				else
-				{
-					RightJoystick = 0.0;
-				}
 
-				//L2 Trigger
-		        if (Xbox.getButtonPress(R2, i)) 
+		        if (Xbox.getButtonPress(A, i))
 		        {
-		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(R2, i) * 1; 
-		        }
-		        //R2 Trigger
-		        else if (Xbox.getButtonPress(L2, i)) 
-		        {
-		          TriggerAggregate = 400.0 / 255 * Xbox.getButtonPress(L2, i) * -1; 
+		          APress = 1;
 		        }
 		        else
 		        {
-		          TriggerAggregate = 0.0;
+		          APress = 0;
 		        }
+
 
 		        if (Xbox.getButtonPress(LEFT, i)) 
 		        {
@@ -79,41 +125,6 @@ void Controller::Task()
 		        else
 		        {
 		          DPadLeftRight = 0;
-		        }
-
-		        if (Xbox.getButtonPress(L1, i))
-		        {
-		          LR2Aggregate = 1;
-		        
-		        }
-		        //R1 Button
-		        else if (Xbox.getButtonPress(R1, i))
-		        {
-		          LR2Aggregate = -1;
-		          
-		        }
-		        else
-		        {
-		          LR2Aggregate = 0;
-		          
-		        }
-
-		        if (Xbox.getButtonPress(A, i))
-		        {
-		          APress = 1;
-		        }
-		        else
-		        {
-		          APress = 0;
-		        }
-
-		        if (Xbox.getButtonPress(Y, i))
-		        {
-		          YPress = 1;
-		        }
-		        else
-		        {
-		          YPress = 0;
 		        }
 
 

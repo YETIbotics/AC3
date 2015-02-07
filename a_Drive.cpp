@@ -29,10 +29,26 @@ void Drive::Task()
 	driveCurPos = robot->GetEncDriveLeft();
 	drivePID.Compute();
 
+
+
 	if(LeftControllerSpeed != 0 || RightControllerSpeed != 0)
 	{
-		robot->DriveRightSpeed = RightControllerSpeed;
-		robot->DriveLeftSpeed = LeftControllerSpeed;
+		float enc = robot->GetEncLiftRight();
+		float k = 1;
+
+		if(enc > 10)
+		{
+			if(enc > 30)
+			{
+				enc = 30;
+			}
+
+			k = ((1.0-((enc - 10)/20)) * 0.6) + 0.4; 
+
+		}
+
+		robot->DriveRightSpeed = RightControllerSpeed * k;
+		robot->DriveLeftSpeed = LeftControllerSpeed * k;
 		driveSetPoint = driveCurPos;
 	} 
 	else

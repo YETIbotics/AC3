@@ -211,7 +211,7 @@ void autoRedGoal()
     case 2500:
       Lift.GoTo(2);
       break;
-
+/*
     case 2900:
       Claw.GoTo(42);
       break;
@@ -238,10 +238,10 @@ void autoRedGoal()
 
     
 
-
+*/
 
     case 9000:
-      Claw.DeClamp();
+     // Claw.DeClamp();
       autoStop();
       break;
       
