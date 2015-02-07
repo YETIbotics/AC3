@@ -13,7 +13,12 @@ class Lift
 
     void Task();
     void init();
-    void GoTo(double position);
+
+    //Autonomous Methods
+    void LiftTo(double position);
+    void LiftAdd(double position);
+
+    //PID
 
      PID liftPID; 
 
@@ -22,6 +27,8 @@ class Lift
     double liftPIDOut = 0;
 
     float ControllerSpeed;
+
+
    
   private:
   	Robot *robot;

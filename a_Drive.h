@@ -13,27 +13,57 @@ class Drive
 
     void Task();
     void init();
-    void GoTo(double position);
 
-     PID drivePID; 
 
-    double driveCurPos = 0;
-    double driveSetPoint = 0;
-    double drivePIDOut = 0;
 
+
+    //Autonomous Methods
+    void DriveLeft(double position);
+    void DriveRight(double position);
+    void Move(double position);
+
+
+    //Floats
     float LeftControllerSpeed;
     float RightControllerSpeed;
+
+    //DriveLeftPID
+
+     PID driveLeftPID; 
+
+    double driveLeftCurPos = 0;
+    double driveLeftSetPoint = 0;
+    double driveLeftPIDOut = 0;
+
+
+
+    //DriveRightPID
+
+    PID driveRightPID;
+    double driveRightCurPos = 0;
+    double driveRightSetPoint = 0;
+    double driveRightPIDOut = 0;
    
   private:
   	Robot *robot;
 
-  	//Drive PID
+  	//DriveLeftPID
   
-    bool drivePIDEnable = false;
-    const int drivePIDTolerence = 5;
-    const double driveKP = 1;
-    const double driveKI = 1;
-    const double driveKD = 1;
+    bool driveLeftPIDEnable = false;
+    const int driveLeftPIDTolerence = 5;
+    const double driveLeftKP = 1;
+    const double driveLeftKI = 1;
+    const double driveLeftKD = 1;
+
+    //DriveRightPID
+
+    bool driveRightPIDEnable = false;
+    const int driveRightPIDTolerence = 5;
+    const double driveRightKP = 1;
+    const double driveRightKI = 1;
+    const double driveRightKD = 1;
+
+
 
     
 };

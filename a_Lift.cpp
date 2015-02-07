@@ -7,10 +7,18 @@ Lift::Lift(Robot *p)
 	robot = p;
 }
 
-void Lift::GoTo(double position)
+
+
+void Lift::LiftTo(double position)
 {
 	liftSetPoint = position;
 }
+
+void Lift::LiftAdd(double position)
+{
+	liftSetPoint += position;
+}
+
 
 
 void Lift::init()

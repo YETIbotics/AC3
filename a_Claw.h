@@ -14,11 +14,13 @@ class Claw
 
     void Task();
     void init();
-    void GoTo(double position);
 
     void Clamp();
     void DeClamp();
     bool clamping = false;
+
+    
+    void ArmTo(double position);
 
     int ControllerClawPosition;
     int ControllerArmSpeed;

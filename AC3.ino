@@ -117,6 +117,11 @@ if (_autoRunning)
       //autoStop();
     }
   }
+
+
+  //Grab Serial Input
+
+
 }
 
 void loop() {
@@ -193,8 +198,8 @@ void autoRedGoal()
   switch(_autoInterval)
   {
     case 0:
-      Drive.GoTo(37);
-      Lift.GoTo(40);
+      //Drive.GoTo(37);
+      //Lift.GoTo(40);
       break;
 
     case 1200:
@@ -202,14 +207,14 @@ void autoRedGoal()
       break;
 
     case 1500:
-      Claw.GoTo(65);
+      //Claw.GoTo(65);
       break;
 
 
       
 
     case 2500:
-      Lift.GoTo(2);
+     // Lift.GoTo(2);
       break;
 /*
     case 2900:
@@ -261,7 +266,108 @@ union {                // This Data structure lets
 }                      // easily convert it to a
 foo;                   // float array
 
+void SerialReceiveMove()
+{
 
+  // read the bytes sent from Processing
+  int index=0;
+  byte Auto_Man = -1;
+  while(Serial.available()&&index<7)
+  {
+    foo.asBytes[index-1] = Serial.read();
+    index++;
+  } 
+  
+  // if the information we got was in the correct format, 
+  // read it into the system
+  if(index==7  )
+  {
+    //switch(foo.)
+
+    Drive.driveLeftSetPoint=double(foo.asFloat[0]);
+    //Input=double(foo.asFloat[1]);       // * the user has the ability to send the 
+                                          //   value of "Input"  in most cases (as 
+                                          //   in this one) this is not needed.
+    if(Auto_Man==0)                       // * only change the output if we are in 
+    {                                     //   manual mode.  otherwise we'll get an
+      Output=double(foo.asFloat[2]);      //   output blip, then the controller will 
+    }                                     //   overwrite.
+    
+    double p, i, d;                       // * read in and set the controller tunings
+    p = double(foo.asFloat[3]);           //
+    i = double(foo.asFloat[4]);           //
+    d = double(foo.asFloat[5]);           //
+    Drive.driveLeftPID.SetTunings(p, i, d);            //
+    
+    if(Auto_Man==0) myPID.SetMode(MANUAL);// * set the controller mode
+    else myPID.SetMode(AUTOMATIC);             //
+  }
+  Serial.flush();                         // * clear any random data from the serial buffer
+
+
+  String funcName = "LT";
+  int funcVal = 10;
+
+  if (funcName == "LT")
+  {
+    Lift.LiftTo(funcVal);
+  }
+  else if (funcName == "LA")
+  {
+    Lift.LiftAdd(funcVal);
+  }
+  else if (funcName == "DL")
+  {
+    (funcVal);
+  }
+  else if (funcName == "LA")
+  {
+    Lift.LiftAdd(funcVal);
+  }
+  else if (funcName == "LA")
+  {
+    Lift.LiftAdd(funcVal);
+  }
+  else if (funcName == "LA")
+  {
+    Lift.LiftAdd(funcVal);
+  }
+  else if (funcName == "LA")
+  {
+    Lift.LiftAdd(funcVal);
+  }
+
+  switch("ASDF")
+  {
+      case "LT":
+        Lift.LiftTo(x);
+        break;
+
+      case "LA":
+        Lift.LiftAdd(x);
+        break;
+
+      case "DL":
+        Drive.DriveLeft(x);
+        break;
+
+      case "DR":
+        Drive.DriveRight(x);
+        break;
+
+      case "MO":
+        Drive.Move(x);
+        break;
+
+      case "CL":
+        Claw.Clamp(x);
+        break;
+
+      case "DC":
+        Claw.DeClamp(x);
+        break;
+  }
+}
 
 // getting float values from processing into the arduino
 // was no small task.  the way this program does it is
@@ -299,7 +405,7 @@ void SerialReceive()
   // read it into the system
   if(index==25  && (Auto_Man==0 || Auto_Man==1))
   {
-    Drive.driveSetPoint=double(foo.asFloat[0]);
+    Drive.driveLeftSetPoint=double(foo.asFloat[0]);
     //Input=double(foo.asFloat[1]);       // * the user has the ability to send the 
                                           //   value of "Input"  in most cases (as 
                                           //   in this one) this is not needed.
@@ -312,7 +418,7 @@ void SerialReceive()
     p = double(foo.asFloat[3]);           //
     i = double(foo.asFloat[4]);           //
     d = double(foo.asFloat[5]);           //
-    Drive.drivePID.SetTunings(p, i, d);            //
+    Drive.driveLeftPID.SetTunings(p, i, d);            //
     
     if(Auto_Man==0) myPID.SetMode(MANUAL);// * set the controller mode
     else myPID.SetMode(AUTOMATIC);             //

@@ -9,7 +9,7 @@ Claw::Claw(Robot *p)
 	
 }
 
-void Claw::GoTo(double position)
+void Claw::ArmTo(double position)
 {
 	armSetPoint = position;
 

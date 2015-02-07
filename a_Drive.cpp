@@ -7,18 +7,33 @@ Drive::Drive(Robot *p)
 	robot = p;
 }
 
-void Drive::GoTo(double position)
+void Drive::DriveLeft(double position)
 {
-	driveSetPoint = position;
+	driveLeftSetPoint += position;
 }
 
+void Drive::DriveRight(double position)
+{
+	driveRightSetPoint += position;
+}
+
+void Drive::Move(double position)
+{
+	driveLeftSetPoint += position;
+	driveRightSetPoint += position;
+}
 
 void Drive::init()
 {
-	drivePID.init(&driveCurPos, &drivePIDOut, &driveSetPoint,driveKP,driveKI,driveKD, DIRECT);
-	driveCurPos = robot->GetEncDriveLeft();
-	drivePID.SetMode(AUTOMATIC);
-	drivePID.SetOutputLimits(-400,400);
+	driveLeftPID.init(&driveLeftCurPos, &driveLeftPIDOut, &driveLeftSetPoint, driveLeftKP, driveLeftKI, driveLeftKD, DIRECT);
+	driveLeftCurPos = robot->GetEncDriveLeft();
+	driveLeftPID.SetMode(AUTOMATIC);
+	driveLeftPID.SetOutputLimits(-400,400);
+
+	driveRightPID.init(&driveRightCurPos, &driveRightPIDOut, &driveRightSetPoint, driveRightKP, driveRightKI, driveRightKD, DIRECT);
+	driveRightCurPos = robot->GetEncDriveRight();
+	driveRightPID.SetMode(AUTOMATIC);
+	driveRightPID.SetOutputLimits(-400,400);
 }
 
 
@@ -26,8 +41,11 @@ void Drive::Task()
 {
 	//Robot.mc1.SetSpeed(LeftDriveSpeed);
 
-	driveCurPos = robot->GetEncDriveLeft();
-	drivePID.Compute();
+	driveLeftCurPos = robot->GetEncDriveLeft();
+	driveLeftPID.Compute();
+
+	driveRightCurPos = robot->GetEncDriveRight();
+	driveRightPID.Compute();
 
 
 
@@ -49,7 +67,8 @@ void Drive::Task()
 
 		robot->DriveRightSpeed = RightControllerSpeed * k;
 		robot->DriveLeftSpeed = LeftControllerSpeed * k;
-		driveSetPoint = driveCurPos;
+		driveLeftSetPoint = driveLeftCurPos;
+		driveRightSetPoint = driveRightCurPos;
 	} 
 	else
 	{
