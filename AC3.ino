@@ -68,8 +68,10 @@ Robot.Read();
   Claw.Task();
 
   Robot.Write();
+    
+    SerialReceiveMove();
 
-  Serial.print(Robot.GetEncDriveLeft());
+  /*Serial.print(Robot.GetEncDriveLeft());
     Serial.print("\t");
     Serial.print(Robot.GetEncDriveRight());
     Serial.print("\t");
@@ -77,7 +79,9 @@ Robot.Read();
     Serial.print("\t");
     Serial.print(Robot.GetEncLiftRight());
     Serial.print("\t");
-    Serial.println(Robot.GetEncClaw());
+    Serial.println(Robot.GetEncClaw()); ?
+
+  
 /*
   if(millis()>serialTime)
   {
@@ -203,7 +207,7 @@ void autoRedGoal()
       break;
 
     case 1200:
-      Robot.ClawPower = 400;
+     // Robot.ClawPower = 400;
       break;
 
     case 1500:
@@ -269,40 +273,7 @@ foo;                   // float array
 void SerialReceiveMove()
 {
 
-  // read the bytes sent from Processing
-  int index=0;
-  byte Auto_Man = -1;
-  while(Serial.available()&&index<7)
-  {
-    foo.asBytes[index-1] = Serial.read();
-    index++;
-  } 
-  
-  // if the information we got was in the correct format, 
-  // read it into the system
-  if(index==7  )
-  {
-    //switch(foo.)
 
-    Drive.driveLeftSetPoint=double(foo.asFloat[0]);
-    //Input=double(foo.asFloat[1]);       // * the user has the ability to send the 
-                                          //   value of "Input"  in most cases (as 
-                                          //   in this one) this is not needed.
-    if(Auto_Man==0)                       // * only change the output if we are in 
-    {                                     //   manual mode.  otherwise we'll get an
-      Output=double(foo.asFloat[2]);      //   output blip, then the controller will 
-    }                                     //   overwrite.
-    
-    double p, i, d;                       // * read in and set the controller tunings
-    p = double(foo.asFloat[3]);           //
-    i = double(foo.asFloat[4]);           //
-    d = double(foo.asFloat[5]);           //
-    Drive.driveLeftPID.SetTunings(p, i, d);            //
-    
-    if(Auto_Man==0) myPID.SetMode(MANUAL);// * set the controller mode
-    else myPID.SetMode(AUTOMATIC);             //
-  }
-  Serial.flush();                         // * clear any random data from the serial buffer
 
 
 ///////////////////////////////////
@@ -313,7 +284,7 @@ void SerialReceiveMove()
   readString="";
 
   while (Serial.available()) {
-    delay(3);  //delay to allow buffer to fill 
+    delay(10);  //delay to allow buffer to fill 
     if (Serial.available() >0) {
       char c = Serial.read();  //gets one byte from serial buffer
       readString += c; //makes the string readString
@@ -326,10 +297,11 @@ void SerialReceiveMove()
       // expect a string like XX #### containing the two servo positions      
       funcName = readString.substring(0, 2); //get the first four characters
       String tmpFuncVal = readString.substring(3, 7); //get the next four characters 
-      funcVal = (double)tmpFuncVal;
+      funcVal = tmpFuncVal.toFloat();
 
     
   } 
+    Serial.flush();  
 
   if (funcName == "LT")
   {
@@ -353,11 +325,15 @@ void SerialReceiveMove()
   }
   else if (funcName == "CL")
   {
-    Claw.Clamp(funcVal);
+    Claw.Clamp();
   }
   else if (funcName == "DC")
   {
-    Claw.DeClamp(funcVal);
+    Claw.DeClamp();
+  }
+  else if (funcName == "AT")
+  {
+    Claw.ArmTo(funcVal);
   }
 
   

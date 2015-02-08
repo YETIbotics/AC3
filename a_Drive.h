@@ -63,6 +63,7 @@ class Drive
     const double driveRightKI = 1;
     const double driveRightKD = 1;
 
+    int correctionVal = 0;
 
 
     

@@ -41,6 +41,46 @@ void Drive::Task()
 {
 	//Robot.mc1.SetSpeed(LeftDriveSpeed);
 
+/*	int enc = robot->GetEncLiftRight();
+		
+	if(enc <= 1)
+	{
+		correctionVal = 0;
+	}
+	else if (enc <= 5)
+	{
+		correctionVal = 15;
+	}
+	else if (enc <= 10)
+	{
+		correctionVal = 10;
+	}
+	else if (enc <= 15)
+	{
+		correctionVal = -7;
+	}
+	else if (enc <= 20)
+	{
+		correctionVal = -27;
+	}
+	else if (enc <= 25)
+	{
+		correctionVal = -43;
+	}
+	else if (enc <= 30)
+	{
+		correctionVal = -52;
+	}
+	else if (enc <= 35)
+	{
+		correctionVal = -51;
+	}
+	else if (enc <= 100)
+	{
+		correctionVal = -34;
+	}
+*/
+
 	driveLeftCurPos = robot->GetEncDriveLeft();
 	driveLeftPID.Compute();
 
@@ -67,23 +107,25 @@ void Drive::Task()
 
 		robot->DriveRightSpeed = RightControllerSpeed * k;
 		robot->DriveLeftSpeed = LeftControllerSpeed * k;
-		driveLeftSetPoint = driveLeftCurPos;
-		driveRightSetPoint = driveRightCurPos;
+		driveLeftSetPoint = driveLeftCurPos + correctionVal;
+		driveRightSetPoint = driveRightCurPos + correctionVal; 
 	} 
 	else
 	{
-		/*
-		if(abs(driveSetPoint - driveCurPos) > drivePIDTolerence) 
+		
+		if(abs(driveLeftSetPoint - driveLeftCurPos) > driveLeftPIDTolerence || abs(driveRightSetPoint - driveRightCurPos) > driveRightPIDTolerence) 
 		{
-			robot->DriveLeftSpeed = drivePIDOut;
-			robot->DriveRightSpeed = drivePIDOut;
+			robot->DriveLeftSpeed = driveLeftPIDOut;
+			robot->DriveRightSpeed = driveRightPIDOut;
 		}
 		else 
-		{*/
+		{
 			robot->DriveLeftSpeed = 0;
 			robot->DriveRightSpeed = 0;
-		//}
+		}
 	}
+
+
 
 	
 }
