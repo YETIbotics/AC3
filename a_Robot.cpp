@@ -48,11 +48,10 @@ void Robot::init(){
 void Robot::Read(){
 	Usb.Task();
 
-	_encDriveRight = encDriveRight.read();
+	_encDriveRight = encDriveRight.read() * -1;
     _encDriveLeft = encDriveLeft.read();
-    _encDriveRight = encDriveRight.read();
     _encLiftRight = encLiftRight.read();
-    _encLiftLeft = encLiftLeft.read();
+    _encLiftLeft = encLiftLeft.read() * -1;
     _encClaw = encClaw.read();
     _leftLimitSwitch = digitalRead(_lift_Left_Limit);
     _rightLimitSwitch = digitalRead(_lift_Right_Limit);

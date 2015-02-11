@@ -22,6 +22,12 @@ void Claw::Clamp()
 }
 void Claw::DeClamp()
 {
+	robot->ClawPower = 399;
+	clamping = true;
+}
+
+void Claw::StopClamp()
+{
 	robot->ClawPower = 0;
 	clamping = false;
 }

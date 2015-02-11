@@ -17,6 +17,7 @@ class Claw
 
     void Clamp();
     void DeClamp();
+    void StopClamp();
     bool clamping = false;
 
     

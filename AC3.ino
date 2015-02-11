@@ -71,7 +71,7 @@ Robot.Read();
     
     SerialReceiveMove();
 
-  /*Serial.print(Robot.GetEncDriveLeft());
+    Serial.print(Robot.GetEncDriveLeft());
     Serial.print("\t");
     Serial.print(Robot.GetEncDriveRight());
     Serial.print("\t");
@@ -79,7 +79,21 @@ Robot.Read();
     Serial.print("\t");
     Serial.print(Robot.GetEncLiftRight());
     Serial.print("\t");
-    Serial.println(Robot.GetEncClaw()); ?
+    Serial.println(Robot.GetEncClaw()); 
+
+
+   /* Serial.print("LLiftI: ");
+    Serial.print(digitalRead(19));
+    Serial.print("\t LLiftD: ");
+    Serial.print(digitalRead(29));
+    Serial.print("\t RDriveI: ");
+    Serial.print(digitalRead(3));
+    Serial.print("\t RDriveD: ");
+    Serial.println(digitalRead(23)); */
+
+
+
+
 
   
 /*
@@ -334,6 +348,10 @@ void SerialReceiveMove()
   else if (funcName == "AT")
   {
     Claw.ArmTo(funcVal);
+  }
+  else if (funcName == "SC")
+  {
+    Claw.StopClamp();
   }
 
   

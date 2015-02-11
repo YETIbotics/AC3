@@ -36,9 +36,9 @@ class Lift
   	//Lift PID
   
     bool liftPIDEnable = false;
-    const int liftPIDTolerence = 5;
-    const double liftKP = 40;
-    const double liftKI = 1;
+    const int liftPIDTolerence = 0;
+    const double liftKP = 60;
+    const double liftKI = 0;
     const double liftKD = 1;
 
 
