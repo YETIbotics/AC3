@@ -57,7 +57,7 @@ void setup() {
 
 void runStuff()
 {
-Robot.Read();
+  Robot.Read();
   Controller.Task();
 
   MapRobot();

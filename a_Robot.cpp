@@ -18,6 +18,11 @@ Robot::Robot()
     encLiftLeft.init(_lift_Left_encInt, _lift_Left_encDig);
     encClaw.init(_claw_encInt, _claw_encDig);
 
+    prevDriveRightSpeed = 0;
+    prevDriveLeftSpeed = 0;
+    prevLiftLeftSpeed = 0;
+    prevLiftRightSpeed = 0;
+
 	DriveRightSpeed = 0;
     DriveLeftSpeed = 0;
     LiftLeftSpeed = 0;
@@ -30,6 +35,9 @@ Robot::Robot()
     LEDRed = 0;
     LEDBlue = 0;
     LEDGreen = 0;
+
+    TorqueLimitDrive = 0;
+    TorqueLimitLift = 0;
 
 }
 
@@ -78,6 +86,43 @@ void Robot::Read(){
 
 }
 
+float Robot::torqueLimit(float prevVal, float curVal, int torqueLim)
+{
+    float retVal = 0;
+
+    //if torqueLim > 0, then it's enabled
+    if(torqueLim > 0)
+    {
+        //If change is from negative to positive, or positive to negative
+        //then pretend we were previously at zero. 
+        if((curVal > 0 && prevVal < 0) || (curVal < 0 && prevVal > 0))
+            prevVal = 0;
+
+
+        //if is increase in power that is greater than torque limit
+        if(prevVal >= 0 && curVal > 0 && curVal > prevVal && curVal > (prevVal+torqueLim))
+        {
+            //increase forward
+            retVal = prevVal + torqueLim;
+        }
+        else if(prevVal <= 0 && curVal < 0 && curVal < prevVal && curVal < (prevVal-torqueLim))
+        {
+            //increase in reverse
+            retVal = prevVal - torqueLim;
+        }
+        else //decrease in power
+        {
+            retVal = curVal;
+        }
+    }
+    else
+    {
+        retVal = curVal;
+    }
+
+    return retVal;
+}
+
 void Robot::Write(){
 	
 	//DriveRightSpeed
@@ -85,7 +130,10 @@ void Robot::Write(){
 		DriveRightSpeed = -400;
     if(DriveRightSpeed > 400)
 		DriveRightSpeed = 400;
-    mc1.setM1Speed(DriveRightSpeed);
+
+    prevDriveRightSpeed = torqueLimit(prevDriveRightSpeed, DriveRightSpeed, TorqueLimitDrive);
+
+    mc1.setM1Speed(prevDriveRightSpeed);
 
     //Serial.print(DriveRightSpeed);
     //Serial.print("\t");
@@ -95,7 +143,10 @@ void Robot::Write(){
         DriveLeftSpeed = -400;
     if(DriveLeftSpeed > 400)
         DriveLeftSpeed = 400;
-    mc2.setM2Speed(DriveLeftSpeed);
+
+    prevDriveLeftSpeed = torqueLimit(prevDriveLeftSpeed, DriveLeftSpeed, TorqueLimitDrive);
+
+    mc2.setM2Speed(prevDriveLeftSpeed);
 
     //Serial.print(DriveLeftSpeed);
     //Serial.print("\t");
@@ -105,7 +156,10 @@ void Robot::Write(){
         LiftLeftSpeed = -400;
     if(LiftLeftSpeed > 400)
         LiftLeftSpeed = 400;
-    mc2.setM1Speed(LiftLeftSpeed);
+
+    prevLiftLeftSpeed = torqueLimit(prevLiftLeftSpeed, LiftLeftSpeed, TorqueLimitLift);
+
+    mc2.setM1Speed(prevLiftLeftSpeed);
 
     //Serial.print(LiftLeftSpeed);
     //Serial.print("\t");
@@ -115,7 +169,10 @@ void Robot::Write(){
         LiftRightSpeed = -400;
     if(LiftRightSpeed > 400)
         LiftRightSpeed = 400;
-    mc1.setM2Speed(LiftRightSpeed);
+
+    prevLiftRightSpeed = torqueLimit(prevLiftRightSpeed, LiftRightSpeed, TorqueLimitLift);
+
+    mc1.setM2Speed(prevLiftRightSpeed);
 
     //Serial.print(LiftRightSpeed);
     //Serial.print("\t");

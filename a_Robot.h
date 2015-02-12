@@ -49,6 +49,9 @@ class Robot
     float LEDBlue;
     float LEDGreen;
 
+    int TorqueLimitDrive;
+    int TorqueLimitLift;
+
     USB Usb;
    
   private:
@@ -63,6 +66,11 @@ class Robot
     Encoder encLiftRight;
     Encoder encLiftLeft;
     Encoder encClaw;
+
+    float prevDriveRightSpeed;
+    float prevDriveLeftSpeed;
+    float prevLiftLeftSpeed;
+    float prevLiftRightSpeed;
 
     //Private ReadOnly Vars
     int _encDriveRight;
@@ -79,6 +87,7 @@ class Robot
 
     //Pirvate Methods
     int convertToServo(float inVal);
+    float torqueLimit(float prevVal, float curVal, int torqueLim);
 
     //ESC
     const int _servoMax = 150;

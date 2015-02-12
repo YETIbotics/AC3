@@ -8,6 +8,11 @@ Lift::Lift(Robot *p)
 }
 
 
+void Lift::SetTorqueLimit(int val)
+{
+	robot->TorqueLimitLift = val;
+}
+
 
 void Lift::LiftTo(double position)
 {

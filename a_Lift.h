@@ -18,6 +18,8 @@ class Lift
     void LiftTo(double position);
     void LiftAdd(double position);
 
+    void SetTorqueLimit(int val);
+
     //PID
 
      PID liftPID; 

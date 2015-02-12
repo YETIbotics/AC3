@@ -7,6 +7,11 @@ Drive::Drive(Robot *p)
 	robot = p;
 }
 
+void Drive::SetTorqueLimit(int val)
+{
+	robot->TorqueLimitDrive = val;
+}
+
 void Drive::DriveLeft(double position)
 {
 	driveLeftSetPoint += position;

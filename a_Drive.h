@@ -22,6 +22,8 @@ class Drive
     void DriveRight(double position);
     void Move(double position);
 
+    void SetTorqueLimit(int val);
+
 
     //Floats
     float LeftControllerSpeed;
