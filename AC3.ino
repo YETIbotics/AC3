@@ -36,10 +36,10 @@ bool _pauseForPID = false;
 const int _maxAutonomousDuration = 60000;
 
 unsigned long serialTime;
-
+/*
 double Setpoint, Input, Output;
 PID myPID;
-
+*/
 
 void setup() {
 	Serial.begin(115200);
@@ -376,6 +376,7 @@ void SerialReceiveMove()
 //  13-16: float P_Param
 //  17-20: float I_Param
 //  21-24: float D_Param
+/*
 void SerialReceive()
 {
 
@@ -412,7 +413,7 @@ void SerialReceive()
     else myPID.SetMode(AUTOMATIC);             //
   }
   Serial.flush();                         // * clear any random data from the serial buffer
-}
+}*/
 
 
 
@@ -420,6 +421,7 @@ void SerialReceive()
 // has no problem converting strings into floats, so
 // we can just send strings.  much easier than getting
 // floats from processing to here no?
+/*
 void SerialSend()
 {
   Serial.print("PID ");
@@ -437,5 +439,5 @@ void SerialSend()
   Serial.print(" ");
   if(myPID.GetMode()==AUTOMATIC) Serial.println("Automatic");
   else Serial.println("Manual");  
-}
+}*/
 

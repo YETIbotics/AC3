@@ -25,12 +25,12 @@ void Drive::Move(double position)
 
 void Drive::init()
 {
-	driveLeftPID.init(&driveLeftCurPos, &driveLeftPIDOut, &driveLeftSetPoint, driveLeftKP, driveLeftKI, driveLeftKD, DIRECT);
+	driveLeftPID.init(&driveLeftCurPos, &driveLeftPIDOut, &driveLeftCorrSetPoint, driveLeftKP, driveLeftKI, driveLeftKD, DIRECT);
 	driveLeftCurPos = robot->GetEncDriveLeft();
 	driveLeftPID.SetMode(AUTOMATIC);
 	driveLeftPID.SetOutputLimits(-400,400);
 
-	driveRightPID.init(&driveRightCurPos, &driveRightPIDOut, &driveRightSetPoint, driveRightKP, driveRightKI, driveRightKD, DIRECT);
+	driveRightPID.init(&driveRightCurPos, &driveRightPIDOut, &driveRightCorrSetPoint, driveRightKP, driveRightKI, driveRightKD, DIRECT);
 	driveRightCurPos = robot->GetEncDriveRight();
 	driveRightPID.SetMode(AUTOMATIC);
 	driveRightPID.SetOutputLimits(-400,400);
@@ -41,18 +41,20 @@ void Drive::Task()
 {
 	//Robot.mc1.SetSpeed(LeftDriveSpeed);
 
-/*	int enc = robot->GetEncLiftRight();
-		
+	int enc = robot->GetEncLiftRight();
+		/*
 	if(enc <= 1)
 	{
 		correctionVal = 0;
 	}
 	else if (enc <= 5)
 	{
+		// 4 -- 15
 		correctionVal = 15;
 	}
 	else if (enc <= 10)
 	{
+		//5 -- -5
 		correctionVal = 10;
 	}
 	else if (enc <= 15)
@@ -78,12 +80,15 @@ void Drive::Task()
 	else if (enc <= 100)
 	{
 		correctionVal = -34;
-	}
-*/
+	}*/
 
+
+
+	driveLeftCorrSetPoint = driveLeftSetPoint + correctionVal;
 	driveLeftCurPos = robot->GetEncDriveLeft();
 	driveLeftPID.Compute();
 
+	driveRightCorrSetPoint = driveRightSetPoint + correctionVal;
 	driveRightCurPos = robot->GetEncDriveRight();
 	driveRightPID.Compute();
 
@@ -107,8 +112,8 @@ void Drive::Task()
 
 		robot->DriveRightSpeed = RightControllerSpeed * k;
 		robot->DriveLeftSpeed = LeftControllerSpeed * k;
-		driveLeftSetPoint = driveLeftCurPos + correctionVal;
-		driveRightSetPoint = driveRightCurPos + correctionVal; 
+		driveLeftSetPoint = driveLeftCurPos - correctionVal;
+		driveRightSetPoint = driveRightCurPos - correctionVal; 
 	} 
 	else
 	{
