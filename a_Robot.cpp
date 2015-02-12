@@ -51,6 +51,14 @@ void Robot::init(){
 
     serClaw.attach(_claw_PWM);
     serClaw.write(90);
+
+    pinMode(_ledGrn, OUTPUT);
+    pinMode(_ledBlu, OUTPUT);
+    pinMode(_ledRed, OUTPUT);
+
+    analogWrite(_ledRed, LEDRed);
+    analogWrite(_ledGrn, LEDGreen);
+    analogWrite(_ledBlu, LEDBlue);
 }
 
 void Robot::Read(){
@@ -84,6 +92,12 @@ void Robot::Read(){
     Serial.println(_encClaw);
 */
 
+}
+void Robot::SetLED(int red, int grn, int blu)
+{
+    LEDRed = red;
+    LEDBlue = blu;
+    LEDGreen = grn;
 }
 
 float Robot::torqueLimit(float prevVal, float curVal, int torqueLim)
@@ -206,6 +220,9 @@ void Robot::Write(){
     //Serial.println(ClawPower);
 
     
+    analogWrite(_ledRed, LEDRed);
+    analogWrite(_ledGrn, LEDGreen);
+    analogWrite(_ledBlu, LEDBlue);
     
 
     //Expect 0-255

@@ -51,8 +51,65 @@ void setup() {
   Lift.init();
   Drive.init();
 
+  Robot.SetLED(255,255,255); //Set LEDs to white
+
   timer.setInterval(20, runStuff);
+  timer.setInterval(1000, manageLEDs);
+  timer.setInterval(250, blink);
   
+}
+
+int secCount = 0;
+bool blinkLEDs = false;
+int red, blu, grn;
+bool blnkOn = true;
+void manageLEDs()
+{
+  secCount++;
+
+  //25 second auton
+  //80 Second Drivers
+  switch(secCount)
+  {
+    case 1:
+      //LEDs green
+      grn = 255;
+      red = 0;
+      blu = 0;
+      Robot.SetLED(red,grn,blu);
+      break;
+    case 20:
+      //Blink Green
+      blinkLEDs = true;
+      break;
+    case 25:
+      //LEDs White
+      blinkLEDs = false;
+      red = 255;
+      blu = 255;
+      Robot.SetLED(red,grn,blu);
+      break;
+    case 75:
+      //Blink LEDs
+      blinkLEDs = true;
+      break;
+  }
+}
+void blink()
+{
+  if(blinkLEDs)
+  {
+    if(blnkOn)
+    {
+      blnkOn = false;
+      Robot.SetLED(0,0,0);
+    }
+    else
+    {
+      blnkOn = true;
+      Robot.SetLED(red,grn,blu);
+    }
+  }
 }
 
 void runStuff()
