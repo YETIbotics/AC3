@@ -73,27 +73,27 @@ void manageLEDs()
   {
     case 1:
       //LEDs green
-      grn = 255;
-      red = 0;
-      blu = 0;
-      Robot.SetLED(red,grn,blu);
-      break;
+        grn = 255;
+        red = 0;
+        blu = 0;
+        Robot.SetLED(red,grn,blu);
+        break;
     case 20:
       //Blink Green
-      blinkLEDs = true;
-      break;
+        blinkLEDs = true;
+        break;
     case 25:
       //LEDs White
-      blinkLEDs = false;
-      red = 255;
-      blu = 255;
-      Robot.SetLED(red,grn,blu);
-      break;
+        blinkLEDs = false;
+        red = 255;
+        blu = 255;
+        Robot.SetLED(red,grn,blu);
+        break;
     case 75:
       //Blink LEDs
-      blinkLEDs = true;
-      break;
-  }
+        blinkLEDs = true;
+        break;
+    }
 }
 void blink()
 {
@@ -103,13 +103,13 @@ void blink()
     {
       blnkOn = false;
       Robot.SetLED(0,0,0);
-    }
-    else
-    {
+  }
+  else
+  {
       blnkOn = true;
       Robot.SetLED(red,grn,blu);
-    }
   }
+}
 }
 
 void runStuff()
@@ -125,18 +125,18 @@ void runStuff()
   Claw.Task();
 
   Robot.Write();
-    
-    SerialReceiveMove();
 
-    Serial.print(Robot.GetEncDriveLeft());
-    Serial.print("\t");
-    Serial.print(Robot.GetEncDriveRight());
-    Serial.print("\t");
-    Serial.print(Robot.GetEncLiftLeft());
-    Serial.print("\t");
-    Serial.print(Robot.GetEncLiftRight());
-    Serial.print("\t");
-    Serial.println(Robot.GetEncClaw()); 
+  SerialReceiveMove();
+
+  Serial.print(Robot.GetEncDriveLeft());
+  Serial.print("\t");
+  Serial.print(Robot.GetEncDriveRight());
+  Serial.print("\t");
+  Serial.print(Robot.GetEncLiftLeft());
+  Serial.print("\t");
+  Serial.print(Robot.GetEncLiftRight());
+  Serial.print("\t");
+  Serial.println(Robot.GetEncClaw()); 
 
 
    /* Serial.print("LLiftI: ");
@@ -152,7 +152,7 @@ void runStuff()
 
 
 
-  
+
 /*
   if(millis()>serialTime)
   {
@@ -166,32 +166,32 @@ void runStuff()
     serialTime+=500;
   }
 */
-if (_autoRunning)
+  if (_autoRunning)
   {
     switch(_autoProgNum)
     {
       case 1: 
-        autoRedGoal();
-        break;
+      autoRedGoal();
+      break;
       case 2:
        // autoBlueGoal();
-        break;
+      break;
       case 3: 
         //autoRedChin();
-        break;
+      break;
       case 4:
         //autoBlueChin();
-        break;
-    }
-    if(!_pauseForPID)
+      break;
+  }
+  if(!_pauseForPID)
       _autoInterval = _autoInterval + 20;
 
     //Safety switch in case forgot to call autoStop
-    if(_autoInterval > _maxAutonomousDuration)
-    {
+  if(_autoInterval > _maxAutonomousDuration)
+  {
       //autoStop();
-    }
   }
+}
 
 
   //Grab Serial Input
@@ -201,7 +201,7 @@ if (_autoRunning)
 
 void loop() {
 
-timer.run();
+  timer.run();
 
   
 
@@ -225,21 +225,21 @@ void MapRobot()
 
   if(Controller.YPress == 1 && !_autoRunning)
   {
-      _autoProgNum = 1;
-              if(_autoProgNum != 0)
-              {
-                if(!_autoRunning)
-                {
+    _autoProgNum = 1;
+    if(_autoProgNum != 0)
+    {
+      if(!_autoRunning)
+      {
                   // Start Program
-                  autoStart();
-                } 
-                else 
-                {
+        autoStart();
+    } 
+    else 
+    {
                   // Stop Program
-                  autoStop();
-                }
-              }
-  }
+        autoStop();
+    }
+}
+}
 
 }
 
@@ -263,7 +263,7 @@ void autoStart()
   {
     _autoRunning = true;
     _autoInterval = 0;
-  }
+}
 }
 
 
@@ -275,22 +275,22 @@ void autoRedGoal()
     case 0:
       //Drive.GoTo(37);
       //Lift.GoTo(40);
-      break;
+    break;
 
     case 1200:
      // Robot.ClawPower = 400;
-      break;
+    break;
 
     case 1500:
       //Claw.GoTo(65);
-      break;
+    break;
 
 
-      
+
 
     case 2500:
      // Lift.GoTo(2);
-      break;
+    break;
 /*
     case 2900:
       Claw.GoTo(42);
@@ -320,7 +320,7 @@ void autoRedGoal()
 
 */
 
-    case 9000:
+      case 9000:
      // Claw.DeClamp();
       autoStop();
       break;
@@ -359,10 +359,10 @@ void SerialReceiveMove()
     if (Serial.available() >0) {
       char c = Serial.read();  //gets one byte from serial buffer
       readString += c; //makes the string readString
-    } 
-  }
+  } 
+}
 
-  if (readString.length() >0) {
+if (readString.length() >0) {
       Serial.println(readString); //see what was received
       
       // expect a string like XX #### containing the two servo positions      
@@ -370,56 +370,56 @@ void SerialReceiveMove()
       String tmpFuncVal = readString.substring(3, 7); //get the next four characters 
       funcVal = tmpFuncVal.toFloat();
 
-    
+
   } 
-    Serial.flush();  
+  Serial.flush();  
 
   if (funcName == "LT")
   {
-    Lift.LiftTo(funcVal);
+      Lift.LiftTo(funcVal);
   }
   else if (funcName == "LA")
   {
-    Lift.LiftAdd(funcVal);
+      Lift.LiftAdd(funcVal);
   }
   else if (funcName == "DL")
   {
-    Drive.DriveLeft(funcVal);
+      Drive.DriveLeft(funcVal);
   }
   else if (funcName == "DR")
   {
-    Drive.DriveRight(funcVal);
+      Drive.DriveRight(funcVal);
   }
   else if (funcName == "MO")
   {
-    Drive.Move(funcVal);
+      Drive.Move(funcVal);
   }
   else if (funcName == "CL")
   {
-    Claw.Clamp();
+      Claw.Clamp();
   }
   else if (funcName == "DC")
   {
-    Claw.DeClamp();
+      Claw.DeClamp();
   }
   else if (funcName == "AT")
   {
-    Claw.ArmTo(funcVal);
+      Claw.ArmTo(funcVal);
   }
   else if (funcName == "SC")
   {
-    Claw.StopClamp();
+      Claw.StopClamp();
   }
   else if (funcName == "TL") //Torque Limit Lift
   {
     Lift.SetTorqueLimit(funcVal);
-  }
+}
   else if (funcName == "TD") //Torque Limit Drive
   {
     Drive.SetTorqueLimit(funcVal);
-  }
+}
 
-  
+
 }
 
 // getting float values from processing into the arduino
