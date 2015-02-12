@@ -35,8 +35,10 @@ void Controller::Task()
 	if (Xbox.XboxReceiverConnected) 
 	{
 		//Set so player 1 takes priority
-		for (uint8_t i = 3; i >= 0; i--) 
+		for (uint8_t i = 0; i < 4; i++) 
 		{
+			
+
 			if (Xbox.Xbox360Connected[i]) 
 			{
 				
@@ -50,6 +52,7 @@ void Controller::Task()
 				if (Xbox.getAnalogHat(RightHatY, i) > joystickMinThresh || Xbox.getAnalogHat(RightHatY, i) < -joystickMinThresh) {
 					RightJoystick = 400.0 / 32767 * Xbox.getAnalogHat(RightHatY, i); 
 				}
+
 				
 
 				//L2 Trigger

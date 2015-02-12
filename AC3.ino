@@ -59,13 +59,15 @@ void setup() {
   
 }
 
-int secCount = 0;
+int secCount = 2; //default to 2, takes ~ 1.5 secs to boot
 bool blinkLEDs = false;
 int red, blu, grn;
 bool blnkOn = true;
 void manageLEDs()
 {
   secCount++;
+
+
 
   //25 second auton
   //80 Second Drivers
@@ -87,29 +89,39 @@ void manageLEDs()
         blinkLEDs = false;
         red = 255;
         blu = 255;
+        grn = 255;
         Robot.SetLED(red,grn,blu);
         break;
     case 75:
       //Blink LEDs
         blinkLEDs = true;
         break;
+    case 105:
+      //LEDs White
+        blinkLEDs = false;
+        red = 255;
+        blu = 255;
+        grn = 255;
+        Robot.SetLED(red,grn,blu);
+        break;
     }
 }
 void blink()
 {
+
   if(blinkLEDs)
   {
     if(blnkOn)
     {
       blnkOn = false;
-      Robot.SetLED(0,0,0);
+      Robot.SetLED(red*.1,grn*.1,blu*.1);
+    }
+    else
+    {
+        blnkOn = true;
+        Robot.SetLED(red,grn,blu);
+    }
   }
-  else
-  {
-      blnkOn = true;
-      Robot.SetLED(red,grn,blu);
-  }
-}
 }
 
 void runStuff()
@@ -127,7 +139,7 @@ void runStuff()
   Robot.Write();
 
   SerialReceiveMove();
-
+/*
   Serial.print(Robot.GetEncDriveLeft());
   Serial.print("\t");
   Serial.print(Robot.GetEncDriveRight());
@@ -137,7 +149,7 @@ void runStuff()
   Serial.print(Robot.GetEncLiftRight());
   Serial.print("\t");
   Serial.println(Robot.GetEncClaw()); 
-
+*/
 
    /* Serial.print("LLiftI: ");
     Serial.print(digitalRead(19));

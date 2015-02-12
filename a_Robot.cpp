@@ -76,21 +76,9 @@ void Robot::Read(){
     _liftLeftCurrent = mc2.getM1CurrentMilliamps();
     _liftRightCurrent = mc1.getM2CurrentMilliamps();
 
-/*
-    Serial.print(_encDriveLeft);
-    Serial.print("\t");
 
-    Serial.print(_encDriveRight);
-    Serial.print("\t");
+   
 
-    Serial.print(_encLiftLeft);
-    Serial.print("\t");
-
-    Serial.print(_encLiftRight);
-    Serial.print("\t");
-
-    Serial.println(_encClaw);
-*/
 
 }
 void Robot::SetLED(int red, int grn, int blu)
@@ -224,6 +212,9 @@ analogWrite(_ledRed, LEDRed);
 analogWrite(_ledGrn, LEDGreen);
 analogWrite(_ledBlu, LEDBlue);
 
+
+ 
+    
 
     //Expect 0-255
     /*float LEDRed;
