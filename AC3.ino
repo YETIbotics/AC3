@@ -353,6 +353,14 @@ void SerialReceiveMove()
   {
     Claw.StopClamp();
   }
+  else if (funcName == "TL") //Torque Limit Lift
+  {
+    Lift.SetTorqueLimit(funcVal);
+  }
+  else if (funcName == "TD") //Torque Limit Drive
+  {
+    Drive.SetTorqueLimit(funcVal);
+  }
 
   
 }
