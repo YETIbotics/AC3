@@ -139,7 +139,7 @@ void runStuff()
   Robot.Write();
 
   SerialReceiveMove();
-/*
+
   Serial.print(Robot.GetEncDriveLeft());
   Serial.print("\t");
   Serial.print(Robot.GetEncDriveRight());
@@ -149,7 +149,7 @@ void runStuff()
   Serial.print(Robot.GetEncLiftRight());
   Serial.print("\t");
   Serial.println(Robot.GetEncClaw()); 
-*/
+
 
    /* Serial.print("LLiftI: ");
     Serial.print(digitalRead(19));
@@ -284,56 +284,43 @@ void autoRedGoal()
  // Serial.println(_autoInterval);
   switch(_autoInterval)
   {
-    case 0:
-      //Drive.GoTo(37);
-      //Lift.GoTo(40);
-    break;
-
-    case 1200:
-     // Robot.ClawPower = 400;
-    break;
-
-    case 1500:
-      //Claw.GoTo(65);
-    break;
-
-
-
-
-    case 2500:
-     // Lift.GoTo(2);
-    break;
-/*
-    case 2900:
-      Claw.GoTo(42);
+      case 0:
+        Claw.DeClamp();
+        Lift.LiftTo(35);
       break;
 
-    case 5000:
-      Claw.Clamp();
-      
+      case 1500:
+        Claw.ArmTo(65);
+        Claw.StopClamp();
+        Lift.LiftTo(8);
       break;
 
-    case 5500:
-      Lift.GoTo(14);
-      Claw.GoTo(83);
+      case 2500:
+        //Drive.Move(30);
+        Claw.DeClamp();
+        Claw.ArmTo(50);
       break;
 
-    case 7000:
-      Lift.GoTo(2);
+      case 3000:
+        Claw.Clamp();
       break;
-    
-    case 8000:
-      Claw.DeClamp();
+
+      case 3100:
+        Lift.LiftTo(15);
+      break;
+
+      case 3200:
+        Claw.ArmTo(80);
+      break;
+
+      case 3500:
+        Lift.LiftTo(0);
+        Claw.StopClamp();
       break;
 
 
-
-    
-
-*/
-
-      case 9000:
-     // Claw.DeClamp();
+      case 4000:
+      Claw.StopClamp();
       autoStop();
       break;
       

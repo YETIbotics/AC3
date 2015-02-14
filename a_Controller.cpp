@@ -27,8 +27,7 @@ void Controller::Task()
 	RightJoystick = 0.0;
 	TriggerAggregate = 0.0;
 	LR2Aggregate = 0;
-	DPadLeftRight = 0;
-	APress = 0;
+	
 	YPress = 0;
 
 	//This is where you update controller items.
@@ -93,6 +92,11 @@ void Controller::Task()
 		        {
 		          APress = 1;
 		        }
+		        else
+		        {
+
+					APress = 0;
+		        }
 
 
 		        if (Xbox.getButtonPress(LEFT, i)) 
@@ -110,6 +114,10 @@ void Controller::Task()
 		        else if (Xbox.getButtonPress(DOWN, i)) 
 		        {
 		          DPadLeftRight = -2; 
+		        }
+		        else
+		        {
+		        	DPadLeftRight = 0;
 		        }
 
 			}

@@ -55,16 +55,16 @@ class Drive
   
     bool driveLeftPIDEnable = false;
     const int driveLeftPIDTolerence = 0;
-    const double driveLeftKP = 25;
-    const double driveLeftKI = 0;
+    const double driveLeftKP = 10;
+    const double driveLeftKI = 1;
     const double driveLeftKD = 1;
 
     //DriveRightPID
 
     bool driveRightPIDEnable = false;
     const int driveRightPIDTolerence = 0;
-    const double driveRightKP = 25;
-    const double driveRightKI = 0;
+    const double driveRightKP = 10;
+    const double driveRightKI = 1;
     const double driveRightKD = 1;
 
     int correctionVal = 0;

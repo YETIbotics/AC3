@@ -44,10 +44,11 @@ void Drive::init()
 
 void Drive::Task()
 {
-	//Robot.mc1.SetSpeed(LeftDriveSpeed);
+	robot->DriveLeftSpeed;
+
 
 	int enc = robot->GetEncLiftRight();
-		/*
+		
 	if(enc <= 1)
 	{
 		correctionVal = 0;
@@ -85,7 +86,7 @@ void Drive::Task()
 	else if (enc <= 100)
 	{
 		correctionVal = -34;
-	}*/
+	}
 
 
 
