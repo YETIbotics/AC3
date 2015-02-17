@@ -45,7 +45,7 @@ void Drive::init()
 void Drive::Task()
 {
 	robot->DriveLeftSpeed;
-
+	robot->DriveRightSpeed;
 
 	int enc = robot->GetEncLiftRight();
 		

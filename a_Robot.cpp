@@ -189,10 +189,10 @@ serIntake.write(convertToServo(IntakeSpeed));
 
 
     //ArmSpeed
-if(ArmSpeed < -400)
-    ArmSpeed = -400;
-if(ArmSpeed > 400)
-    ArmSpeed = 400;
+if(ArmSpeed < -100)
+    ArmSpeed = -100;
+if(ArmSpeed > 100)
+    ArmSpeed = 100;
 serArm.write(convertToServo(ArmSpeed));
 
     //Serial.println(ArmSpeed);

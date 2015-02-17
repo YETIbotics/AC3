@@ -286,40 +286,61 @@ void autoRedGoal()
   {
       case 0:
         Claw.DeClamp();
+      break;
+
+      case 20:
         Lift.LiftTo(35);
       break;
 
       case 1500:
         Claw.ArmTo(65);
+      break;
+
+      case 2000:
+        Lift.LiftTo(9);
         Claw.StopClamp();
-        Lift.LiftTo(8);
-      break;
-
-      case 2500:
-        //Drive.Move(30);
-        Claw.DeClamp();
-        Claw.ArmTo(50);
-      break;
-
-      case 3000:
-        Claw.Clamp();
-      break;
-
-      case 3100:
-        Lift.LiftTo(15);
-      break;
-
-      case 3200:
-        Claw.ArmTo(80);
       break;
 
       case 3500:
-        Lift.LiftTo(0);
-        Claw.StopClamp();
+        Drive.Move(42);
       break;
 
+      case 5000:
+        Claw.DeClamp();
+        Claw.ArmTo(48);
+      break;
 
-      case 4000:
+      case 6000:
+        Claw.Clamp();
+      break;
+
+      case 7000:
+        Lift.LiftTo(18);
+      break;
+
+      case 8000:
+        Claw.ArmTo(80);
+      break;
+
+      case 9000:
+        Lift.LiftTo(0);
+      break;
+
+      case 10000:
+        Claw.DeClamp();
+      break;
+
+    /*  case 12000:
+        Lift.LiftTo(9);
+      break;
+
+      case 16000:
+        Claw.ArmTo(50);
+      break;
+
+      case 22000: */
+
+      case 11000:
       Claw.StopClamp();
       autoStop();
       break;
@@ -416,6 +437,10 @@ if (readString.length() >0) {
   else if (funcName == "TD") //Torque Limit Drive
   {
     Drive.SetTorqueLimit(funcVal);
+  }
+  else if (funcName == "AR")
+  {
+    void autoRedGoal();
   }
 
 
