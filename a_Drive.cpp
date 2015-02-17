@@ -124,16 +124,15 @@ void Drive::Task()
 	else
 	{
 		
-		if(abs(driveLeftSetPoint - driveLeftCurPos) > driveLeftPIDTolerence || abs(driveRightSetPoint - driveRightCurPos) > driveRightPIDTolerence) 
+		/*if(abs(driveLeftSetPoint - driveLeftCurPos) > driveLeftPIDTolerence || abs(driveRightSetPoint - driveRightCurPos) > driveRightPIDTolerence) 
 		{
 			robot->DriveLeftSpeed = driveLeftPIDOut;
 			robot->DriveRightSpeed = driveRightPIDOut;
-		}
-		else 
-		{
+		}*/
+		
 			robot->DriveLeftSpeed = 0;
 			robot->DriveRightSpeed = 0;
-		}
+		
 	}
 
 
