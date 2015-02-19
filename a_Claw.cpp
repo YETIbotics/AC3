@@ -75,7 +75,7 @@ void Claw::Task()
 	if(ControllerArmSpeed == 1) //RIGHT
 	{
 		//robot->ArmSpeed = 200;
-		armSetPoint = 78;
+		armSetPoint = 80;
 	}
 	else if(ControllerArmSpeed == -1) //LEFT
 	{

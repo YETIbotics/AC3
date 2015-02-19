@@ -284,7 +284,7 @@ void autoRedGoal()
  // Serial.println(_autoInterval);
   switch(_autoInterval)
   {
-      case 0:
+    /*  case 0:
         Claw.DeClamp();
       break;
 
@@ -330,7 +330,7 @@ void autoRedGoal()
         Claw.DeClamp();
       break;
 
-    /*  case 12000:
+     case 12000:
         Lift.LiftTo(9);
       break;
 
@@ -339,8 +339,39 @@ void autoRedGoal()
       break;
 
       case 22000: */
+      case 0:
+        Drive.Move(70);
+      break;
+
+      case 1000:
+        Lift.LiftTo(45);
+        Claw.DeClamp();
+      break;
+
+      case 4000:
+        Claw.ArmTo(62);
+      break;
+
+      case 5500:
+        Claw.StopClamp();
+        Lift.LiftTo(10);
+      break;
+
+      case 8500:
+        Claw.DeClamp();
+        Claw.ArmTo(81);
+      break;
 
       case 11000:
+        Claw.Clamp();
+        Lift.LiftTo(15);
+      break;
+
+      case 12000:
+        Drive.Move(200);
+      break;
+
+      case 15000:
       Claw.StopClamp();
       autoStop();
       break;

@@ -44,12 +44,14 @@ void Controller::Task()
 				
 
 
-				if (Xbox.getAnalogHat(LeftHatY, i) > joystickMinThresh || Xbox.getAnalogHat(LeftHatY, i) < -joystickMinThresh) {
+				if (Xbox.getAnalogHat(LeftHatY, i) > joystickMinThresh || Xbox.getAnalogHat(LeftHatY, i) < -joystickMinThresh) 
+				{
 					LeftJoystick = 400.0 / 32767 * Xbox.getAnalogHat(LeftHatY, i); 
 				}
 				
 
-				if (Xbox.getAnalogHat(RightHatY, i) > joystickMinThresh || Xbox.getAnalogHat(RightHatY, i) < -joystickMinThresh) {
+				if (Xbox.getAnalogHat(RightHatY, i) > joystickMinThresh || Xbox.getAnalogHat(RightHatY, i) < -joystickMinThresh) 
+				{
 					RightJoystick = 400.0 / 32767 * Xbox.getAnalogHat(RightHatY, i); 
 				}
 

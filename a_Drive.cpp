@@ -89,6 +89,139 @@ void Drive::Task()
 	}
 
 
+/*	int enc = robot->GetEncLiftRight();
+		
+	if (enc = 1)
+	{
+		correctionVal = 0;
+	}
+	else if (enc = 2)
+	{
+		correctionVal = 4;
+	}
+	else if (enc = 3)
+	{
+		correctionVal = 8;
+	}
+	else if (enc = 4)
+	{
+		correctionVal = 12;
+	}
+	else if (enc = 5)
+	{
+		// 4 -- 15
+		correctionVal = 15;
+	}
+	else if (enc = 6)
+	{
+		correctionVal = 14;
+	}
+	else if (enc = 7)
+	{
+		correctionVal = 13;
+	}
+	else if (enc = 8)
+	{
+		correctionVal = 12;
+	}
+	else if (enc = 9)
+	{
+		correctionVal = 11;
+	}
+	else if (enc = 10)
+	{
+		//5 -- -5
+		correctionVal = 10;
+	}
+	else if (enc = 11)
+	{
+		correctionVal = 6;
+	}
+	else if (enc = 12)
+	{
+		correctionVal = 2;
+	}
+	else if (enc = 13)
+	{
+		correctionVal = -1;
+	}
+	else if (enc = 14)
+	{
+		correctionVal = -4;
+	}
+	else if (enc = 15)
+	{
+		correctionVal = -7;
+	}
+	else if (enc = 16)
+	{
+		correctionVal = -11;
+	}
+	else if (enc = 17)
+	{
+		correctionVal = -15
+	}
+	else if (enc = 18)
+	{
+		correctionVal = -19;
+	}
+	else if (enc = 19)
+	{
+		correctionVal = -23;
+	}
+	else if (enc = 20)
+	{
+		correctionVal = -27;
+	}
+	else if (enc = 21)
+	{
+		correctionVal = -30;
+	}
+	else if (enc = 22)
+	{
+		correctionVal = -33;
+	}
+	else if (enc = 23)
+	{
+		correctionVal = -36;
+	}
+	else if (enc = 24)
+	{
+		correctionVal = -40;
+	}
+	else if (enc = 25)
+	{
+		correctionVal = -43;
+	}
+	else if (enc = 26)
+	{
+		correctionVal = -45;
+	}
+	else if (enc = 27)
+	{
+		correctionVal = -47;
+	}
+	else if (enc = 28)
+	{
+		correctionVal = -49;
+	}
+	else if (enc = 29)
+	{
+		correctionVal = -51;
+	}
+	else if (enc = 30)
+	{
+		correctionVal = -52;
+	}
+	else if (enc <= 35)
+	{
+		correctionVal = -51;
+	}
+	else if (enc <= 100)
+	{
+		correctionVal = -34;
+	}
+*/
 
 	driveLeftCorrSetPoint = driveLeftSetPoint + correctionVal;
 	driveLeftCurPos = robot->GetEncDriveLeft();
@@ -112,7 +245,7 @@ void Drive::Task()
 				enc = 30;
 			}
 
-			k = ((1.0-((enc - 10)/20)) * 0.6) + 0.4; 
+			k = ((1.0-((enc - 10)/30)) * 0.6) + 0.4; 
 
 		}
 
@@ -124,14 +257,16 @@ void Drive::Task()
 	else
 	{
 		
-		/*if(abs(driveLeftSetPoint - driveLeftCurPos) > driveLeftPIDTolerence || abs(driveRightSetPoint - driveRightCurPos) > driveRightPIDTolerence) 
+		if(abs(driveLeftSetPoint - driveLeftCurPos) > driveLeftPIDTolerence || abs(driveRightSetPoint - driveRightCurPos) > driveRightPIDTolerence) 
 		{
 			robot->DriveLeftSpeed = driveLeftPIDOut;
 			robot->DriveRightSpeed = driveRightPIDOut;
-		}*/
-		
+		}
+		else 
+		{
 			robot->DriveLeftSpeed = 0;
 			robot->DriveRightSpeed = 0;
+		}
 		
 	}
 

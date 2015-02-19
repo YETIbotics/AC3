@@ -54,11 +54,11 @@ void Lift::Task()
 			robot->LiftRightSpeed = liftPIDOut;
 		}
 		else 
-		{
+		{ 
 			robot->LiftLeftSpeed = 0;
 			robot->LiftRightSpeed = 0;
 		}
-	}
+	} 
 
 	
 }

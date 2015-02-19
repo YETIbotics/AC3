@@ -163,8 +163,8 @@ prevLiftLeftSpeed = torqueLimit(prevLiftLeftSpeed, LiftLeftSpeed, TorqueLimitLif
 
 mc2.setM1Speed(prevLiftLeftSpeed);
 
-    //Serial.print(LiftLeftSpeed);
-    //Serial.print("\t");
+   /* Serial.print(LiftLeftSpeed);
+    Serial.print("\t"); */
 
     //LiftRightSpeed
 if(LiftRightSpeed < -400)
@@ -176,8 +176,8 @@ prevLiftRightSpeed = torqueLimit(prevLiftRightSpeed, LiftRightSpeed, TorqueLimit
 
 mc1.setM2Speed(prevLiftRightSpeed);
 
-    //Serial.print(LiftRightSpeed);
-    //Serial.print("\t");
+    Serial.print(LiftRightSpeed);
+    Serial.print("\t");
 
     //IntakeSpeed
 if(IntakeSpeed < -400)
@@ -189,10 +189,10 @@ serIntake.write(convertToServo(IntakeSpeed));
 
 
     //ArmSpeed
-if(ArmSpeed < -100)
-    ArmSpeed = -100;
-if(ArmSpeed > 100)
-    ArmSpeed = 100;
+if(ArmSpeed < -180)
+    ArmSpeed = -180;
+if(ArmSpeed > 180)
+    ArmSpeed = 180;
 serArm.write(convertToServo(ArmSpeed));
 
     //Serial.println(ArmSpeed);
