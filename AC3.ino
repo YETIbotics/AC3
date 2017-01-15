@@ -10,6 +10,7 @@
 //Directly Used Library Includes
 #include "a_Robot.h"
 #include "a_Controller.h"
+#include "a_Autonomous.h"
 
 #include "a_Lift.h"
 #include "a_Drive.h"
@@ -25,6 +26,7 @@ Lift Lift(&Robot);
 Drive Drive(&Robot);
 Intake Intake(&Robot);
 Claw Claw(&Robot);
+Autonomous Autonomous(&Robot);
 
 SimpleTimer timer;
 
@@ -37,8 +39,6 @@ void setup() {
   Claw.init();
   Lift.init();
   Drive.init();
-
-  Robot.SetLED(255,255,255); //Set LEDs to white
 
   timer.setInterval(20, runStuff);
   timer.setInterval(1000, manageLEDs);

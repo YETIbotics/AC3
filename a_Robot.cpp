@@ -32,9 +32,9 @@ Robot::Robot()
     ClawPower = 0;
 
     //Expect 0-255
-    LEDRed = 0;
-    LEDBlue = 0;
-    LEDGreen = 0;
+    LEDRed = 255;
+    LEDBlue = 255;
+    LEDGreen = 255;
 
     secCount = 2; //default to 2, takes ~ 1.5 secs to boot
     blinkLEDs = false;
@@ -79,10 +79,6 @@ void Robot::Read(){
     _driveRightCurrent = mc1.getM1CurrentMilliamps();
     _liftLeftCurrent = mc2.getM1CurrentMilliamps();
     _liftRightCurrent = mc1.getM2CurrentMilliamps();
-
-
-
-
 
 }
 void Robot::SetLED(int red, int grn, int blu)
