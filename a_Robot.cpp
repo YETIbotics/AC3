@@ -36,6 +36,10 @@ Robot::Robot()
     LEDBlue = 0;
     LEDGreen = 0;
 
+    secCount = 2; //default to 2, takes ~ 1.5 secs to boot
+    blinkLEDs = false;
+    blnkOn = true;
+
     TorqueLimitDrive = 0;
     TorqueLimitLift = 0;
 
@@ -77,7 +81,7 @@ void Robot::Read(){
     _liftRightCurrent = mc1.getM2CurrentMilliamps();
 
 
-   
+
 
 
 }
@@ -86,6 +90,66 @@ void Robot::SetLED(int red, int grn, int blu)
     LEDRed = red;
     LEDBlue = blu;
     LEDGreen = grn;
+}
+
+void Robot::ManageLEDs()
+{
+    secCount++;
+
+  //25 second auton
+  //80 Second Drivers
+    switch(secCount)
+    {
+        case 1:
+      //LEDs green
+        grn = 255;
+        red = 0;
+        blu = 0;
+        SetLED(red,grn,blu);
+        break;
+        case 20:
+      //Blink Green
+        blinkLEDs = true;
+        break;
+        case 25:
+      //LEDs White
+        blinkLEDs = false;
+        red = 255;
+        blu = 255;
+        grn = 255;
+        SetLED(red,grn,blu);
+        break;
+        case 75:
+      //Blink LEDs
+        blinkLEDs = true;
+        break;
+        case 105:
+      //LEDs White
+        blinkLEDs = false;
+        red = 255;
+        blu = 255;
+        grn = 255;
+        SetLED(red,grn,blu);
+        break;
+    }
+}
+
+void Robot::BlinkLEDs()
+{
+
+  if(blinkLEDs)
+  {
+    if(blnkOn)
+    {
+      blnkOn = false;
+      SetLED(red*.1,grn*.1,blu*.1);
+  }
+  else
+  {
+      blnkOn = true;
+      SetLED(red,grn,blu);
+  }
+}
 }
 
 float Robot::torqueLimit(float prevVal, float curVal, int torqueLim)
@@ -176,8 +240,8 @@ prevLiftRightSpeed = torqueLimit(prevLiftRightSpeed, LiftRightSpeed, TorqueLimit
 
 mc1.setM2Speed(prevLiftRightSpeed);
 
-    Serial.print(LiftRightSpeed);
-    Serial.print("\t");
+Serial.print(LiftRightSpeed);
+Serial.print("\t");
 
     //IntakeSpeed
 if(IntakeSpeed < -400)
@@ -213,14 +277,14 @@ analogWrite(_ledGrn, LEDGreen);
 analogWrite(_ledBlu, LEDBlue);
 
 
- 
-    
+
+
 
     //Expect 0-255
     /*float LEDRed;
     float LEDBlue;
     float LEDGreen;*/
-    
+
 }
 
 int Robot::convertToServo(float inVal)

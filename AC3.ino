@@ -42,74 +42,10 @@ void setup() {
 
   timer.setInterval(20, runStuff);
   timer.setInterval(1000, manageLEDs);
-  timer.setInterval(250, blink);
+  timer.setInterval(250, blinkLEDs);
   
 }
 
-int secCount = 2; //default to 2, takes ~ 1.5 secs to boot
-bool blinkLEDs = false;
-int red, blu, grn;
-bool blnkOn = true;
-void manageLEDs()
-{
-  secCount++;
-
-
-
-  //25 second auton
-  //80 Second Drivers
-  switch(secCount)
-  {
-    case 1:
-      //LEDs green
-    grn = 255;
-    red = 0;
-    blu = 0;
-    Robot.SetLED(red,grn,blu);
-    break;
-    case 20:
-      //Blink Green
-    blinkLEDs = true;
-    break;
-    case 25:
-      //LEDs White
-    blinkLEDs = false;
-    red = 255;
-    blu = 255;
-    grn = 255;
-    Robot.SetLED(red,grn,blu);
-    break;
-    case 75:
-      //Blink LEDs
-    blinkLEDs = true;
-    break;
-    case 105:
-      //LEDs White
-    blinkLEDs = false;
-    red = 255;
-    blu = 255;
-    grn = 255;
-    Robot.SetLED(red,grn,blu);
-    break;
-  }
-}
-void blink()
-{
-
-  if(blinkLEDs)
-  {
-    if(blnkOn)
-    {
-      blnkOn = false;
-      Robot.SetLED(red*.1,grn*.1,blu*.1);
-    }
-    else
-    {
-      blnkOn = true;
-      Robot.SetLED(red,grn,blu);
-    }
-  }
-}
 
 void runStuff()
 {
@@ -127,6 +63,16 @@ void runStuff()
 
   SerialReceiveMove();
 
+}
+
+void manageLEDs()
+{
+    Robot.ManageLEDs();
+}
+
+void blinkLEDs()
+{
+    Robot.BlinkLEDs();
 }
 
 void loop() {

@@ -18,7 +18,11 @@ class Robot
     void Read();
     void Write();
     void init();
-    void SetLED(int red, int grn, int blu);
+     void SetLED(int red, int grn, int blu);
+
+    //To be called by timer in INO to manage LED lights.
+     void ManageLEDs();
+     void BlinkLEDs();
     //void SetController(Controller *controller);
 
     //Read Only Items
@@ -46,9 +50,9 @@ class Robot
     float ClawPower;
 
     //Expect 0-255
-    int LEDRed;
-    int LEDBlue;
-    int LEDGreen;
+     int LEDRed;
+     int LEDBlue;
+     int LEDGreen;
 
     int TorqueLimitDrive;
     int TorqueLimitLift;
@@ -72,6 +76,11 @@ class Robot
     float prevDriveLeftSpeed;
     float prevLiftLeftSpeed;
     float prevLiftRightSpeed;
+
+     int secCount;
+     bool blinkLEDs;
+     int red, blu, grn;
+     bool blnkOn;
 
     //Private ReadOnly Vars
     int _encDriveRight;
